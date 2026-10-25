@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, readFile, readdir } from 'node:fs/promises';
@@ -9,7 +10,7 @@ test('build is self-contained and only owns portfolio files', async () => {
   const output = await mkdtemp(path.join(os.tmpdir(), 'ucicke-site-'));
   await build(output);
   assert.deepEqual((await readdir(output)).sort(), ['index.html', 'site-assets']);
-  for (const file of siteFiles) {
+  for (const file of siteFiles.filter((name) => name !== 'index.html')) {
     assert.equal(await readFile(path.join(output, file), 'utf8'), await readFile(path.join(projectRoot, file), 'utf8'));
   }
   const html = await readFile(path.join(output, 'index.html'), 'utf8');
@@ -18,6 +19,8 @@ test('build is self-contained and only owns portfolio files', async () => {
   }
   assert.doesNotMatch(html, /<script|\{#each|\{profile\.|\/_app\/|telegram-web-app/i);
   assert.equal((html.match(/<title>/g) || []).length, 1);
+  const cssVersion = createHash('sha256').update(await readFile(path.join(output, 'site-assets/styles.css'))).digest('hex').slice(0, 12);
+  assert.ok(html.includes(`/site-assets/styles.css?v=${cssVersion}`));
 });
 
 test('deployment publishes only site-owned links under a shared lock', async () => {
