@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520" fill="none">
+  <defs>
+    <radialGradient id="garden" cx="0" cy="0" r="1" gradientTransform="translate(427 250) rotate(90) scale(324 470)" gradientUnits="userSpaceOnUse"><stop stop-color="#344D32"/><stop offset=".6" stop-color="#1A2D23"/><stop offset="1" stop-color="#112019"/></radialGradient>
+    <linearGradient id="leaf" x1="298" y1="120" x2="532" y2="354" gradientUnits="userSpaceOnUse"><stop stop-color="#D2E99A"/><stop offset=".5" stop-color="#9EC26B"/><stop offset="1" stop-color="#5C8B4E"/></linearGradient>
+    <linearGradient id="flesh" x1="357" y1="148" x2="462" y2="294" gradientUnits="userSpaceOnUse"><stop stop-color="#DD8B63"/><stop offset="1" stop-color="#7E3D33"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0v32" stroke="#BED990" stroke-opacity=".045"/></pattern>
+  </defs>
+  <path fill="url(#garden)" d="M0 0h800v520H0z"/><path fill="url(#grid)" d="M0 0h800v520H0z"/>
+  <g stroke="#B8D18C" stroke-opacity=".12"><circle cx="427" cy="247" r="104"/><circle cx="427" cy="247" r="160"/><circle cx="427" cy="247" r="210"/><path d="M177 247h500M427 29v435" stroke-dasharray="3 8"/></g>
+  <g stroke="#0D2119" stroke-width="4" stroke-linejoin="round">
+    <path d="M426 428c-18-62-16-107-4-161" stroke="#688D50" stroke-width="19"/>
+    <path d="M425 378c-89 11-146-15-183-84 86-3 145 26 183 84Z" fill="#6F9B53"/>
+    <path d="M420 346c82 1 141-48 159-120-86 10-132 53-159 120Z" fill="#89B260"/>
+    <path d="M390 261c-82-7-148-66-145-152 84 35 127 73 145 152Z" fill="url(#leaf)"/>
+    <path d="M451 256c81-21 135-76 148-165-84 31-129 77-148 165Z" fill="url(#leaf)"/>
+    <path d="M412 171c-44-43-48-94-20-136 42 45 50 88 20 136Z" fill="#9BC373"/>
+    <path d="M463 173c39-43 77-52 127-42-35 44-72 57-127 42Z" fill="#5C8B50"/>
+  </g>
+  <g stroke="#294D2B" stroke-width="2" opacity=".65"><path d="m264 137 119 119m-102-100 5 40m25-14 4 42m24-14 9 30m229-120-119 128m104-102-37 6m17 22-38 7m15 18-37 10M267 310l140 61m-111-39 32-5m4 22 28-7m196-97-117 86m88-63-30-1m8 20-30 2"/></g>
+  <g stroke="#11291B" stroke-width="5" stroke-linejoin="round">
+    <path d="m342 202 33-36 5-31 35 19 37-15 19 35 35 8-10 33 22 32-29 23-1 35-38 1-24 26-31-26-35 1-7-35-26-20 15-29Z" fill="url(#leaf)"/>
+    <path d="M365 211c16-30 67-36 100-10 30 24 29 62 3 83-27 22-69 18-95-3-24-19-25-43-8-70Z" fill="url(#flesh)"/>
+    <path d="M374 222c13-16 41-22 63-16 29 9 37 29 27 48-8 20-29 29-52 24-32-7-53-33-38-56Z" fill="#19251C" stroke-width="3"/>
+  </g>
+  <g fill="#E4E7B7"><path d="m374 220 14-8 3 21Zm26-12 13-1-3 24Zm30 1 14 7-18 17Zm25 16 9 13-23 2ZM384 259l18-5-3 17Zm29 18 4-20 12 20Zm32-8-7-18 19 7Z"/></g>
+  <g fill="#C9DF95"><circle cx="234" cy="255" r="5"/><circle cx="620" cy="319" r="3"/><circle cx="307" cy="79" r="3"/><circle cx="651" cy="169" r="4"/><circle cx="177" cy="174" r="2"/></g>
+  <g stroke="#D4E6A5" stroke-opacity=".5"><path d="M85 120h22m-11-11v22m560 241h22m-11-11v22M56 359v-17h17m652-198h17v17"/></g>
+  <g fill="#B2CC8A" font-family="monospace" font-size="9" letter-spacing="1.5"><text x="57" y="426">HOSTILE GARDEN_02</text><text x="57" y="445" font-size="8" fill="#7E9B6B">STAY ALIVE. GROW STRANGER.</text></g>
+  <path d="M56 461h155" stroke="#7E9B6B" stroke-opacity=".3"/>
+  <path d="M56 461h38" stroke="#DF986E"/>
+</svg>

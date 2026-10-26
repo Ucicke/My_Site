@@ -1,10 +1,25 @@
 import { createServer } from 'node:http';
+import { watch } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { projectRoot, siteFiles } from './build.mjs';
+import { build, projectRoot, siteFiles } from './build.mjs';
 
 const port = Number(process.env.PORT || 4174);
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml' };
+const output = path.join(projectRoot, 'dist');
+const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml' };
+await build(output);
+let pending = Promise.resolve();
+let timer;
+const scheduleBuild = () => {
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    pending = pending.then(() => build(output)).then(() => console.log('Website updated.')).catch((error) => console.error('Build failed:', error.message));
+  }, 100);
+};
+watch(projectRoot, (_, filename) => { if (filename === 'index.html') scheduleBuild(); });
+watch(path.join(projectRoot, 'site-assets'), (_, filename) => {
+  if (filename && siteFiles.includes(`site-assets/${filename}`)) scheduleBuild();
+});
 
 createServer(async (request, response) => {
   const pathname = new URL(request.url || '/', 'http://localhost').pathname;
@@ -15,7 +30,8 @@ createServer(async (request, response) => {
     return;
   }
   try {
-    const data = await readFile(path.join(projectRoot, name));
+    await pending;
+    const data = await readFile(path.join(output, name));
     response.writeHead(200, { 'Content-Type': types[path.extname(name)], 'Cache-Control': 'no-store' });
     response.end(data);
   } catch {

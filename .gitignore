@@ -1,5 +1,39 @@
+# Dependencies and generated output
 dist/
 node_modules/
+
+# Local environment and deployment configuration
 deploy/deploy.env
+.env
+.env.*
+*.env
+*.env.*
+!.env.example
+!*.env.example
+!.env.template
+!*.env.template
+
+# Private keys and local credential stores
+.ssh/
+.aws/
+secrets/
+credentials/
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+id_ecdsa_sk
+id_ed25519_sk
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+.npmrc
+.netrc
+
+# Local backups and logs
 .recycle-bin/
+*.bak
+*.backup
 *.log
