@@ -14,6 +14,7 @@ export const siteFiles = [
   'site-assets/cover-lifesim.svg',
   'site-assets/cover-deadweed.svg',
   'site-assets/cover-scroll-hunter.svg',
+  'site-assets/cover-dark-pool.svg',
 ];
 const execute = promisify(execFile);
 

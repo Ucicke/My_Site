@@ -24,7 +24,7 @@ npm run dev
 
 Предпросмотр: http://127.0.0.1:4174/. HTML/CSS/JS сайта пересобираются при изменении;
 обновите страницу после сообщения `Website updated.`.
-Ссылки `/lifesim/`, `/deadweed/` и `/scroll_hunter/` ведут на опубликованные игры.
+Ссылки `/lifesim/`, `/deadweed/`, `/scroll_hunter/` и `/dark_pool/` ведут на опубликованные игры.
 
 ```powershell
 npm test
