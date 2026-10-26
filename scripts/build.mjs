@@ -13,6 +13,7 @@ export const siteFiles = [
   'site-assets/favicon.svg',
   'site-assets/cover-lifesim.svg',
   'site-assets/cover-deadweed.svg',
+  'site-assets/cover-scroll-hunter.svg',
 ];
 const execute = promisify(execFile);
 

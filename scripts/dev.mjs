@@ -6,7 +6,10 @@ import { build, projectRoot, siteFiles } from './build.mjs';
 
 const port = Number(process.env.PORT || 4174);
 const output = path.join(projectRoot, 'dist');
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml' };
+const types = {
+  '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml',
+};
 await build(output);
 let pending = Promise.resolve();
 let timer;
@@ -26,7 +29,7 @@ createServer(async (request, response) => {
   const name = pathname === '/' ? 'index.html' : pathname.slice(1);
   if (!siteFiles.includes(name)) {
     response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-    response.end('Not found. Games run at https://ucicke.ru/lifesim/ and /deadweed/.');
+    response.end('Not found.');
     return;
   }
   try {

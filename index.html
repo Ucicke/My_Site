@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ucicke — Иван Брежнев · инди-разработчик</title>
-  <meta name="description" content="Я Иван Брежнев, он же Ucicke. Начинающий инди-разработчик, создаю собственные игры: LifeSim и Deadweed." />
+  <meta name="description" content="Я Иван Брежнев, он же Ucicke. Создаю LifeSim, Deadweed и Scroll Hunter — три самостоятельные игры, в которые можно играть в браузере." />
   <meta name="theme-color" content="#FBF9F4" />
   <meta property="og:title" content="Ucicke — игры со своим характером" />
-  <meta property="og:description" content="Два разных мира, один автор. LifeSim — история одной жизни. Deadweed — зомби против хищного сада. Игры Ивана Брежнева." />
+  <meta property="og:description" content="LifeSim — история одной жизни. Deadweed — зомби против хищного сада. Scroll Hunter — рискованный спуск за свитками и золотом." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ucicke.ru/" />
   <link rel="canonical" href="https://ucicke.ru/" />
@@ -24,7 +24,7 @@
     <div class="site-shell header-inner flex items-center justify-between">
       <a class="wordmark" href="/" aria-label="Ucicke, главная">ucicke<span class="brand-star" aria-hidden="true">✳</span></a>
       <nav class="flex items-center" aria-label="Основная навигация">
-        <a class="nav-link" href="#games">Игры <span class="nav-count">(02)</span></a>
+        <a class="nav-link" href="#games">Игры <span class="nav-count">(03)</span></a>
         <a class="nav-link" href="#about">Обо мне</a>
         <a class="nav-contact magnetic" data-magnetic href="https://t.me/Ucicke" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram">
           <span>На связи</span><svg class="icon arrow-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" /></svg>
@@ -69,16 +69,17 @@
                 <div class="code-line"><span class="line-number" aria-hidden="true">01</span><code><span class="token-purple">const</span> developer <span class="token-muted">=</span> <span class="token-orange">'ucicke'</span>;</code></div>
                 <div class="code-line"><span class="line-number" aria-hidden="true">02</span><code><span class="token-purple">const</span> projects <span class="token-muted">=</span> [</code></div>
                 <div class="code-line"><span class="line-number" aria-hidden="true">03</span><code>  <span class="token-orange">'LifeSim'</span>,</code></div>
-                <div class="code-line"><span class="line-number" aria-hidden="true">04</span><code>  <span class="token-orange">'Deadweed'</span></code></div>
-                <div class="code-line"><span class="line-number" aria-hidden="true">05</span><code>];</code></div>
-                <div class="code-line code-space"><span class="line-number" aria-hidden="true">06</span><code></code></div>
-                <div class="code-line"><span class="line-number" aria-hidden="true">07</span><code><span class="token-purple">for</span> (<span class="token-purple">const</span> idea <span class="token-purple">of</span> projects) {</code></div>
-                <div class="code-line"><span class="line-number" aria-hidden="true">08</span><code>  <span class="token-blue">createWorld</span>(idea);</code></div>
-                <div class="code-line"><span class="line-number" aria-hidden="true">09</span><code>}</code></div>
+                <div class="code-line"><span class="line-number" aria-hidden="true">04</span><code>  <span class="token-orange">'Deadweed'</span>,</code></div>
+                <div class="code-line"><span class="line-number" aria-hidden="true">05</span><code>  <span class="token-orange">'Scroll Hunter'</span></code></div>
+                <div class="code-line"><span class="line-number" aria-hidden="true">06</span><code>];</code></div>
+                <div class="code-line code-space"><span class="line-number" aria-hidden="true">07</span><code></code></div>
+                <div class="code-line"><span class="line-number" aria-hidden="true">08</span><code><span class="token-purple">for</span> (<span class="token-purple">const</span> idea <span class="token-purple">of</span> projects) {</code></div>
+                <div class="code-line"><span class="line-number" aria-hidden="true">09</span><code>  <span class="token-blue">createWorld</span>(idea);</code></div>
+                <div class="code-line"><span class="line-number" aria-hidden="true">10</span><code>}</code></div>
                 <div id="extra-code" hidden>
-                  <div class="code-line code-space"><span class="line-number" aria-hidden="true">10</span><code></code></div>
-                  <div class="code-line"><span class="line-number" aria-hidden="true">11</span><code><span class="token-muted">// Идеи становятся играми.</span></code></div>
-                  <div class="code-line"><span class="line-number" aria-hidden="true">12</span><code><span class="token-blue">keepCreating</span>();</code></div>
+                  <div class="code-line code-space"><span class="line-number" aria-hidden="true">11</span><code></code></div>
+                  <div class="code-line"><span class="line-number" aria-hidden="true">12</span><code><span class="token-muted">// Идеи становятся играми.</span></code></div>
+                  <div class="code-line"><span class="line-number" aria-hidden="true">13</span><code><span class="token-blue">keepCreating</span>();</code></div>
                 </div>
               </div>
               <div class="terminal-bottom flex items-center justify-between">
@@ -87,7 +88,7 @@
               </div>
               <div class="terminal-output" id="terminal-output" hidden>
                 <span class="output-label">Выберите свой мир</span>
-                <div class="flex flex-wrap"><a href="/lifesim/">LifeSim ↗</a><a href="/deadweed/">Deadweed ↗</a></div>
+                <div class="flex flex-wrap"><a href="/lifesim/">LifeSim ↗</a><a href="/deadweed/">Deadweed ↗</a><a href="/scroll_hunter/">Scroll Hunter ↗</a></div>
               </div>
               <p class="sr-only" role="status" data-terminal-status></p>
             </div>
@@ -110,7 +111,7 @@
           <div class="worlds-card">
             <div class="worlds-card-top flex items-center justify-between"><span class="micro-label">IDEA → CODE → PLAY</span><span class="orange-star" aria-hidden="true">✳</span></div>
             <p>Маленькая мастерская.<br /><strong>Свои большие миры.</strong></p>
-            <a href="#games" class="workspace-link">02 проекта <span aria-hidden="true">↗</span></a>
+            <a href="#games" class="workspace-link">03 проекта <span aria-hidden="true">↗</span></a>
           </div>
           <span class="workspace-coordinate" aria-hidden="true">UC / CREATIVE WORKSPACE — 001</span>
         </div>
@@ -124,7 +125,7 @@
     <section id="games" class="projects-section site-shell" aria-labelledby="games-title">
       <div class="section-heading">
         <div><p class="eyebrow">01 <span>/</span> МОИ ПРОЕКТЫ</p><h2 id="games-title">Можно <span>поиграть.</span></h2></div>
-        <p class="section-note">От жизненных развилок<br />до хищного сада. Выбирайте мир.</p>
+        <p class="section-note">От жизненных развилок<br />до подземелья и хищного сада.</p>
       </div>
 
       <div class="projects-grid">
@@ -157,8 +158,23 @@
             <a class="project-link flex items-center justify-between" href="/deadweed/"><span>Играть в Deadweed</span><span aria-hidden="true">↗</span></a>
           </div>
         </article>
+
+        <article class="project-card project-scroll-hunter" data-reveal>
+          <a class="project-cover" href="/scroll_hunter/" aria-label="Играть в Охотников за свитками против арендодателя">
+            <img class="cover-image" src="/site-assets/cover-scroll-hunter.svg" alt="Иллюстрация подземелья с картой, свитком и золотом" width="800" height="520" loading="lazy" />
+            <span class="cover-topline"><span>SCROLL HUNTER / 03</span><span>DUNGEON ROGUELITE</span></span>
+            <span class="cover-cta"><span>Спуститься в подземелье</span><svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" /></svg></span>
+          </a>
+          <div class="project-info">
+            <div class="project-category flex items-center justify-between"><span>Карточный roguelite</span><span class="project-platform">BROWSER GAME</span></div>
+            <div class="project-title-row flex items-start justify-between"><h3><a href="/scroll_hunter/">Охотники за<br />свитками</a></h3><span class="project-number" aria-hidden="true">03</span></div>
+            <p>Каждый сундук — ставка: реликвия может помочь, а мимик отнимет здоровье. Исследуйте подземелье, выбирайте путь, собирайте золото на аренду и улучшайте героя между забегами.</p>
+            <ul class="tech-tags flex flex-wrap" aria-label="Технологии Scroll Hunter"><li>JavaScript</li><li>Canvas 2D</li><li>Web Audio</li></ul>
+            <a class="project-link flex items-center justify-between" href="/scroll_hunter/"><span>Играть в Scroll Hunter</span><span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
       </div>
-      <p class="projects-postscript"><span class="status-dot" aria-hidden="true"></span> Оба проекта развиваются. Новые идеи уже в работе.</p>
+      <p class="projects-postscript"><span class="status-dot" aria-hidden="true"></span> Все три игры запускаются в браузере. Новые идеи уже в работе.</p>
     </section>
 
     <section id="about" class="about-section" aria-labelledby="about-title">
@@ -170,7 +186,7 @@
         </div>
         <div class="about-copy" data-reveal>
           <p class="about-lead">Начинающий инди-разработчик.<br />Автор своих игровых миров.</p>
-          <p>Придумываю миры, собираю механики и довожу проекты до того, чтобы в них можно было играть. Сейчас развиваю LifeSim и Deadweed — две разные игры с собственным характером.</p>
+          <p>Придумываю миры, собираю механики и довожу проекты до того, чтобы в них можно было играть. Сейчас развиваю LifeSim, Deadweed и Scroll Hunter — три игры с собственным характером.</p>
           <p>В дневнике разработки показываю, как они растут: новые идеи, решения, механики и обновления. Весь процесс — от «а что, если…» до следующей версии.</p>
           <a class="devlog-link flex items-center justify-between" href="https://t.me/indiegameforge" target="_blank" rel="noopener noreferrer">
             <span><span class="micro-label">МЫСЛИ ИЗ МАСТЕРСКОЙ</span><strong>Дневник разработки</strong><span class="devlog-handle">t.me/indiegameforge</span></span>
