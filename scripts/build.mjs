@@ -22,6 +22,7 @@ const gameRoutes = ['/lifesim/', '/deadweed/', '/scroll_hunter/', '/dark_pool/',
 export const pageGameBundles = [
   { slug: 'deadweed', source: 'pages-games/deadweed' },
   { slug: 'scroll_hunter', source: 'pages-games/scroll_hunter' },
+  { slug: 'dark_pool', source: 'pages-games/dark_pool' },
   { slug: 'rus_vs_yashcher', source: 'pages-games/rus_vs_yashcher' },
 ];
 

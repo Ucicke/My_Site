@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #05060a;
+            color: #e2e8f0;
+            font-family: 'Montserrat', 'Georgia', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            position: relative;
+        }
+
+        /* ХОЛСТ ВСЕГДА ЗАНИМАЕТ ОКНО ЦЕЛИКОМ. Игра рисуется в альбомном кадре,
+           а окно может быть портретным, и кадр вписывается в него через
+           object-fit: contain. Вписывание делает БРАУЗЕР: элемент остаётся
+           размером с окно, и обрезать просто нечего.
+           Раньше вписывание делал JavaScript, задавая размеры элемента, и в
+           портрете кадр уезжал за правый и нижний край — правую часть экрана
+           поражения было не видно, а до неё нельзя было дотянуться. */
+        #gameCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            background-color: #05060a;
+            border: none;
+            box-shadow: none;
+            outline: none;
+            object-fit: contain;
+            /* Телефон не должен прокручивать страницу и зумить её под пальцем:
+               страница и так не прокручивается, но браузер всё равно тянет
+               экран жестом. Игровые органы управления ловят касания сами. */
+            touch-action: none;
+        }
+
+        /* Кнопка во весь экран. Живёт НАД холстом и в углу ОКНА, а не в углу
+           игрового кадра: в портрете игровой кадр — полоса посередине, и
+           кнопка в её углу была бы до кнопки не дотянуться.
+
+           На компьютере кнопка крупная: мышью в неё целятся без прицела.
+           На телефоне — мелкая: палец в неё попадает по нему, а место на
+           экране занимает палец, а не кнопка. Режим телефона игра помечает
+           классом touch-mode на теле (см. TouchControls). */
+        #fullscreenBtn {
+            position: fixed;
+            top: calc(8px + env(safe-area-inset-top, 0px));
+            right: calc(8px + env(safe-area-inset-right, 0px));
+            z-index: 10;
+            width: 56px;
+            height: 56px;
+            padding: 0;
+            font-size: 28px;
+            line-height: 1;
+            color: #cbd5e1;
+            background: rgba(12, 10, 20, 0.55);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            border-radius: 10px;
+            cursor: pointer;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Телефон: кнопка мельче и не отвлекает от боя. */
+        body.touch-mode #fullscreenBtn {
+            width: 34px;
+            height: 34px;
+            font-size: 17px;
+            border-radius: 8px;
+            opacity: 0.75;
+        }
+
+        #fullscreenBtn:hover,
+        #fullscreenBtn:focus-visible {
+            color: #00ffcc;
+            border-color: rgba(0, 255, 204, 0.8);
+            outline: none;
+        }
+
+        #fullscreenBtn:active {
+            background: rgba(0, 255, 204, 0.22);
+        }
+
+        /* Кнопка не должна перехватывать жесты игры, но и не должна
+           перерисовываться поверх кадра мигающим. */
+        #fullscreenBtn[hidden] {
+            display: none;
+        }
+    
+        /* Защита от системных жестов: требование 1.14 Яндекс Игр. */
+        html, body {
+            touch-action: none;
+            overscroll-behavior: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Пока игра не сняла оверлей, жест по нему не должен проваливаться в canvas. */
+        #boot {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #05060a;
+            color: #94a3b8;
+            font: 600 14px 'Montserrat', 'Georgia', sans-serif;
+            letter-spacing: 0.2em;
+            z-index: 10;
+            /* Клики проходят насквозь: оверлей не имеет права перехватывать ввод. */
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="boot">ЗАГРУЗКА</div>
+    <script>
+        // Оверлей снимается первым отрисованным кадром игры. Игровой цикл стартует
+        // из DOMContentLoaded, который наступает раньше load, поэтому к моменту
+        // load цикл уже работает, а двойной requestAnimationFrame гарантирует,
+        // что кадр не просто запланирован, а показан.
+        window.addEventListener("load", function () {
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    var boot = document.getElementById("boot");
+                    if (boot && boot.parentNode) boot.parentNode.removeChild(boot);
+                });
+            });
+        });
+    </script>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <button id="fullscreenBtn" type="button" title="Во весь экран" aria-label="Во весь экран">⛶</button>
+    <script src="game.js" defer></script>
+</body>
+</html>

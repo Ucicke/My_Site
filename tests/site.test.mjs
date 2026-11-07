@@ -10,7 +10,7 @@ test('build is self-contained and contains only site files and Pages game bundle
   const output = await mkdtemp(path.join(os.tmpdir(), 'ucicke-site-'));
   await build(output);
   assert.deepEqual((await readdir(output)).sort(), [
-    'deadweed', 'index.html', 'rus_vs_yashcher', 'scroll_hunter', 'site-assets'
+    'dark_pool', 'deadweed', 'index.html', 'rus_vs_yashcher', 'scroll_hunter', 'site-assets'
   ]);
   for (const file of siteFiles.filter((name) => !['index.html', 'site-assets/styles.css'].includes(name))) {
     assert.equal(await readFile(path.join(output, file), 'utf8'), await readFile(path.join(projectRoot, file), 'utf8'));
@@ -48,7 +48,6 @@ test('build publishes static games under the GitHub Pages project URL', async ()
   assert.ok(html.includes(`href="/My_Site/site-assets/styles.css?v=${cssVersion}"`));
   assert.ok(html.includes('src="/My_Site/site-assets/cover-rus-vs-yashcher.svg?v='));
   assert.ok(html.includes('href="https://ucicke.ru/lifesim/"'));
-  assert.ok(html.includes('href="https://ucicke.ru/dark_pool/"'));
   for (const { slug } of pageGameBundles) {
     assert.ok(html.includes(`href="/My_Site/${slug}/"`), slug);
     assert.ok((await readdir(path.join(output, slug))).includes('index.html'), slug);

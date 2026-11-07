@@ -25,7 +25,7 @@ npm run dev
 
 Предпросмотр: http://127.0.0.1:4174/. HTML/CSS/JS сайта пересобираются при изменении;
 обновите страницу после сообщения `Website updated.`.
-GitHub Pages публикует статические сборки Deadweed, Scroll Hunter и «Русы против ящеров» по адресам `/deadweed/`, `/scroll_hunter/` и `/rus_vs_yashcher/`. LifeSim требует работающий API и базу данных, а исходная сборка Dark Pool в локальных проектах не найдена; эти две ссылки пока остаются на старом хосте.
+GitHub Pages публикует статические сборки Deadweed, Scroll Hunter, Dark Pool и «Русы против ящеров» по адресам `/deadweed/`, `/scroll_hunter/`, `/dark_pool/` и `/rus_vs_yashcher/`. LifeSim требует работающий API и базу данных, поэтому его ссылка пока остаётся на старом хосте.
 
 ```powershell
 npm test
