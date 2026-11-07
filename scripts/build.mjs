@@ -18,8 +18,26 @@ export const siteFiles = [
   'site-assets/cover-rus-vs-yashcher.svg',
 ];
 const execute = promisify(execFile);
+const gameRoutes = ['/lifesim/', '/deadweed/', '/scroll_hunter/', '/dark_pool/', '/rus_vs_yashcher/'];
 
-export async function build(output = path.join(projectRoot, 'dist')) {
+function normalizeBasePath(value) {
+  const basePath = value || '/';
+  if (basePath === './') return basePath;
+  if (!basePath.startsWith('/') || basePath.startsWith('//') || /[?#\s]/.test(basePath)) {
+    throw new Error('SITE_BASE_PATH must be /, ./, or an absolute URL path ending in a slash');
+  }
+  return basePath.endsWith('/') ? basePath : `${basePath}/`;
+}
+
+export async function build(output = path.join(projectRoot, 'dist'), options = {}) {
+  const basePath = normalizeBasePath(options.basePath ?? process.env.SITE_BASE_PATH);
+  const gameOrigin = (options.gameOrigin ?? process.env.SITE_GAME_ORIGIN ?? '').replace(/\/+$/, '');
+  if (basePath !== '/' && !gameOrigin) {
+    throw new Error('SITE_GAME_ORIGIN is required when building under a project subpath');
+  }
+  if (gameOrigin && !/^https:\/\/[^/]+$/.test(gameOrigin)) {
+    throw new Error('SITE_GAME_ORIGIN must be an HTTPS origin without a path');
+  }
   for (const name of siteFiles.filter((file) => file !== 'site-assets/styles.css')) {
     const target = path.join(output, name);
     await mkdir(path.dirname(target), { recursive: true });
@@ -36,10 +54,14 @@ export async function build(output = path.join(projectRoot, 'dist')) {
     throw new Error('The website must not depend on the game build or Telegram SDK');
   }
   // Version every local asset so a release cannot mix old CSS, JS, or covers.
+  if (basePath !== '/') html = html.replaceAll('href="/"', `href="${basePath}"`);
+  for (const route of gameRoutes) {
+    if (gameOrigin) html = html.replaceAll(`href="${route}"`, `href="${gameOrigin}${route}"`);
+  }
   for (const asset of siteFiles.filter((name) => name.startsWith('site-assets/'))) {
     const version = createHash('sha256').update(await readFile(path.join(output, asset))).digest('hex').slice(0, 12);
-    html = html.replaceAll(`href="/${asset}"`, `href="/${asset}?v=${version}"`);
-    html = html.replaceAll(`src="/${asset}"`, `src="/${asset}?v=${version}"`);
+    html = html.replaceAll(`href="/${asset}"`, `href="${basePath}${asset}?v=${version}"`);
+    html = html.replaceAll(`src="/${asset}"`, `src="${basePath}${asset}?v=${version}"`);
   }
   await writeFile(path.join(output, 'index.html'), html, 'utf8');
   return output;

@@ -34,6 +34,19 @@ test('build is self-contained and only owns portfolio files', async () => {
   }
 });
 
+test('build rewrites local and game links for a GitHub Pages project URL', async () => {
+  const output = await mkdtemp(path.join(os.tmpdir(), 'ucicke-pages-'));
+  await build(output, { basePath: '/My_Site/', gameOrigin: 'https://ucicke.ru' });
+  const html = await readFile(path.join(output, 'index.html'), 'utf8');
+  const cssVersion = createHash('sha256').update(await readFile(path.join(output, 'site-assets/styles.css'))).digest('hex').slice(0, 12);
+  assert.ok(html.includes('href="/My_Site/" aria-label="Ucicke, главная"'));
+  assert.ok(html.includes(`href="/My_Site/site-assets/styles.css?v=${cssVersion}"`));
+  assert.ok(html.includes('src="/My_Site/site-assets/cover-rus-vs-yashcher.svg?v='));
+  assert.ok(html.includes('href="https://ucicke.ru/lifesim/"'));
+  assert.ok(html.includes('href="https://ucicke.ru/rus_vs_yashcher/"'));
+  assert.doesNotMatch(html, /href="\/(?:lifesim|deadweed|scroll_hunter|dark_pool|rus_vs_yashcher)\//);
+});
+
 test('deployment publishes only site-owned links under a shared lock', async () => {
   const script = await readFile(new URL('../deploy/publish.sh', import.meta.url), 'utf8');
   assert.ok(script.includes('flock -x 9'));
