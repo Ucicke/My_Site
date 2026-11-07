@@ -44,7 +44,7 @@ run?.addEventListener('click', () => {
   const expanded = run.getAttribute('aria-expanded') !== 'true';
   run.setAttribute('aria-expanded', String(expanded));
   if (output) output.hidden = !expanded;
-  if (terminalStatus) terminalStatus.textContent = expanded ? 'Доступны две игры: LifeSim и Deadweed.' : 'Ссылки на игры скрыты.';
+  if (terminalStatus) terminalStatus.textContent = expanded ? 'Показаны ссылки на игры.' : 'Ссылки на игры скрыты.';
 });
 
 const handle = document.querySelector('[data-drag-handle]');
