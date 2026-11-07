@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
-import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 import path from 'node:path';
@@ -19,6 +19,11 @@ export const siteFiles = [
 ];
 const execute = promisify(execFile);
 const gameRoutes = ['/lifesim/', '/deadweed/', '/scroll_hunter/', '/dark_pool/', '/rus_vs_yashcher/'];
+export const pageGameBundles = [
+  { slug: 'deadweed', source: 'pages-games/deadweed' },
+  { slug: 'scroll_hunter', source: 'pages-games/scroll_hunter' },
+  { slug: 'rus_vs_yashcher', source: 'pages-games/rus_vs_yashcher' },
+];
 
 function normalizeBasePath(value) {
   const basePath = value || '/';
@@ -43,6 +48,9 @@ export async function build(output = path.join(projectRoot, 'dist'), options = {
     await mkdir(path.dirname(target), { recursive: true });
     await copyFile(path.join(projectRoot, name), target);
   }
+  for (const { slug, source } of pageGameBundles) {
+    await cp(path.join(projectRoot, source), path.join(output, slug), { recursive: true });
+  }
   await execute(process.execPath, [
     path.join(projectRoot, 'node_modules/@tailwindcss/cli/dist/index.mjs'),
     '--input', path.join(projectRoot, 'site-assets/styles.css'),
@@ -57,6 +65,11 @@ export async function build(output = path.join(projectRoot, 'dist'), options = {
   if (basePath !== '/') html = html.replaceAll('href="/"', `href="${basePath}"`);
   for (const route of gameRoutes) {
     if (gameOrigin) html = html.replaceAll(`href="${route}"`, `href="${gameOrigin}${route}"`);
+  }
+  for (const { slug } of pageGameBundles) {
+    const route = `/${slug}/`;
+    const hostedRoute = `${basePath}${slug}/`;
+    html = html.replaceAll(`href="${gameOrigin ? `${gameOrigin}${route}` : route}"`, `href="${hostedRoute}"`);
   }
   for (const asset of siteFiles.filter((name) => name.startsWith('site-assets/'))) {
     const version = createHash('sha256').update(await readFile(path.join(output, asset))).digest('hex').slice(0, 12);

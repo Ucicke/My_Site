@@ -1,0 +1,251 @@
+{
+  "size": [
+    1024,
+    384
+  ],
+  "rgbaBytes": 1572864,
+  "rects": {
+    "bio_bone": [
+      19,
+      4,
+      89,
+      120
+    ],
+    "bio_tendon": [
+      150,
+      4,
+      83,
+      120
+    ],
+    "bio_cocoon": [
+      274,
+      4,
+      91,
+      120
+    ],
+    "bio_vertebra": [
+      420,
+      4,
+      55,
+      120
+    ],
+    "bio_carapace": [
+      517,
+      4,
+      117,
+      120
+    ],
+    "bio_hive": [
+      655,
+      4,
+      97,
+      120
+    ],
+    "bio_needle": [
+      780,
+      4,
+      104,
+      120
+    ],
+    "bio_womb": [
+      914,
+      4,
+      91,
+      120
+    ],
+    "biotech_btn_wide_normal": [
+      4,
+      133,
+      248,
+      118
+    ],
+    "biotech_btn_wide_focus": [
+      260,
+      132,
+      248,
+      120
+    ],
+    "biotech_btn_wide_violet_normal": [
+      516,
+      132,
+      248,
+      120
+    ],
+    "biotech_btn_wide_violet_focus": [
+      772,
+      132,
+      248,
+      120
+    ],
+    "biotech_checkbox_off_normal": [
+      6,
+      260,
+      116,
+      120
+    ],
+    "biotech_checkbox_on_normal": [
+      135,
+      260,
+      113,
+      120
+    ],
+    "biotech_checkbox_off_focus": [
+      264,
+      260,
+      111,
+      120
+    ],
+    "biotech_checkbox_on_focus": [
+      392,
+      260,
+      111,
+      120
+    ],
+    "biotech_slot_tile_normal": [
+      522,
+      260,
+      108,
+      120
+    ],
+    "biotech_slot_tile_focus": [
+      650,
+      260,
+      108,
+      120
+    ],
+    "biotech_dna": [
+      801,
+      260,
+      61,
+      120
+    ],
+    "biotech_biomass": [
+      904,
+      260,
+      112,
+      120
+    ]
+  },
+  "sourceRects": {
+    "bio_bone": [
+      45,
+      24,
+      232,
+      313
+    ],
+    "bio_tendon": [
+      351,
+      37,
+      207,
+      298
+    ],
+    "bio_cocoon": [
+      596,
+      27,
+      233,
+      307
+    ],
+    "bio_vertebra": [
+      920,
+      25,
+      144,
+      317
+    ],
+    "bio_carapace": [
+      28,
+      387,
+      254,
+      261
+    ],
+    "bio_hive": [
+      323,
+      366,
+      234,
+      290
+    ],
+    "bio_needle": [
+      594,
+      376,
+      237,
+      274
+    ],
+    "bio_womb": [
+      866,
+      352,
+      229,
+      303
+    ],
+    "biotech_btn_wide_normal": [
+      28,
+      694,
+      254,
+      121
+    ],
+    "biotech_btn_wide_focus": [
+      301,
+      693,
+      255,
+      123
+    ],
+    "biotech_btn_wide_violet_normal": [
+      572,
+      693,
+      256,
+      124
+    ],
+    "biotech_btn_wide_violet_focus": [
+      842,
+      692,
+      259,
+      125
+    ],
+    "biotech_checkbox_off_normal": [
+      82,
+      863,
+      155,
+      160
+    ],
+    "biotech_checkbox_on_normal": [
+      359,
+      864,
+      153,
+      163
+    ],
+    "biotech_checkbox_off_focus": [
+      626,
+      863,
+      154,
+      166
+    ],
+    "biotech_checkbox_on_focus": [
+      897,
+      862,
+      155,
+      168
+    ],
+    "biotech_slot_tile_normal": [
+      28,
+      1056,
+      254,
+      282
+    ],
+    "biotech_slot_tile_focus": [
+      308,
+      1056,
+      254,
+      282
+    ],
+    "biotech_dna": [
+      633,
+      1056,
+      158,
+      309
+    ],
+    "biotech_biomass": [
+      846,
+      1069,
+      255,
+      272
+    ]
+  }
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#070b16">
+    <meta name="description" content="Охотники за свитками против арендодателя — карточная игра о удаче и древних свитках.">
+    <title>Охотники за свитками против арендодателя</title>
+    <link rel="icon" type="image/svg+xml" href="assets/quartermaster/tally.svg">
+
+    <!-- Шрифты: Inter для интерфейса, Manrope для заголовков -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Живой задний фон -->
+    <div class="bg-overlay"></div>
+
+    <main class="game-container">
+
+        <!-- Верхняя панель со статистикой -->
+        <header class="game-header canvas-hidden">
+            <div class="stat">
+                <span class="stat-label">Этап</span>
+                <span class="stat-value" id="ui-round">Врата подземелья</span>
+            </div>
+
+            <div class="header-center">
+                <div class="stat">
+                    <span class="stat-label">Жизни</span>
+                    <div id="ui-hp" class="hp" aria-label="Здоровье"></div>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Неделя</span>
+                    <div id="ui-week" class="week-pips" aria-label="Неделя кампании"></div>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Цена совета</span>
+                    <span class="stat-value" id="ui-checks">0</span>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="gold-block">
+                    <div class="gold-top">
+                        <span class="gold-amount" id="ui-scrolls">0</span>
+                        <span class="gold-target" id="ui-goldtarget">/ 200 зол.</span>
+                    </div>
+                    <div class="gold-bar" id="ui-goldwrap"><i id="ui-goldbar"></i></div>
+                </div>
+                <button id="btn-mute" class="icon-btn" type="button" title="Звук (M)" aria-label="Звук"></button>
+            </div>
+        </header>
+
+        <!-- Активные дары и проклятия -->
+        <div class="boons-bar canvas-hidden" id="ui-boons"></div>
+
+        <!-- Игровой экран и карта подземелья -->
+        <div class="stage">
+            <div class="map-panel canvas-hidden" id="ui-map"></div>
+            <div class="canvas-wrapper">
+                <canvas id="gameCanvas" width="1000" height="880" class="canvas-interactive" aria-hidden="true" tabindex="-1"></canvas>
+                <div id="canvas-accessibility-controls" class="canvas-accessibility-controls" role="group" aria-label="Действия на игровом экране"></div>
+                <div id="canvas-accessibility-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+                <div id="canvas-accessibility-rules" class="visually-hidden" hidden></div>
+            </div>
+        </div>
+
+        <!-- Панель интерфейса -->
+        <section class="ui-panel canvas-hidden">
+            <!-- Роги: торговец сведениями -->
+            <div class="rogi-panel" id="ui-rogi"></div>
+
+        </section>
+    </main>
+
+    <!-- Кнопка «Правила» добавляется в панель управления из game.js -->
+
+    <!-- Движок: рендер, звук, эффекты -->
+    <script src="js/core/random.js"></script>
+    <script src="js/engine/core.js"></script>
+    <script src="js/engine/audio.js"></script>
+    <script src="js/engine/effects.js"></script>
+    <script src="js/engine/environment.js"></script>
+    <script src="js/engine/room-composition.js"></script>
+    <script src="js/engine/chests.js"></script>
+    <script src="js/engine/chest-details.js"></script>
+    <script src="js/engine/overlays.js"></script>
+    <script src="js/engine/canvas-map.js"></script>
+    <script src="js/engine/canvas-text.js"></script>
+    <script src="js/engine/canvas-quartermaster.js"></script>
+    <script src="js/engine/canvas-inventory.js"></script>
+    <script src="js/engine/canvas-ui.js"></script>
+    <script src="js/engine/canvas-messages.js"></script>
+    <script src="js/engine/canvas-hud.js"></script>
+    <script src="js/engine/canvas-menu.js"></script>
+    <script src="js/engine/canvas-input.js"></script>
+    <script src="js/engine/main.js"></script>
+
+    <!-- Данные: свитки, силы, события, типы комнат, иконки -->
+    <script src="js/data/scrolls.js"></script>
+    <script src="js/data/powers.js"></script>
+    <script src="js/data/events.js"></script>
+    <script src="js/data/rooms.js"></script>
+    <script src="js/data/icons.js"></script>
+    <script src="js/data/rogi.js"></script>
+    <script src="js/data/rogi-personality.js"></script>
+    <script src="js/data/rogi-voice.js"></script>
+    <script src="js/data/dialogue.js"></script>
+    <script src="js/core/first-friday-story.js"></script>
+    <script src="js/core/two-rogues-story.js"></script>
+
+    <!-- Игра: состояние, мета, карта, экономика, кампания, поток, интерфейс, ввод -->
+    <script src="js/core/state.js"></script>
+    <script src="js/core/event-deck.js"></script>
+    <script src="js/core/heist-rules.js"></script>
+    <script src="js/core/headless-session.js"></script>
+    <script src="js/core/heist-loop.js"></script>
+    <script src="js/core/meta.js"></script>
+    <script src="js/core/map.js"></script>
+    <script src="js/core/economy.js"></script>
+    <script src="js/core/campaign.js"></script>
+    <script src="js/core/mapview.js"></script>
+    <script src="js/core/rogi.js"></script>
+    <script src="js/core/companion.js"></script>
+    <script src="js/core/rogi-promises.js"></script>
+    <script src="js/core/rogi-ai.js"></script>
+    <script src="js/core/rogi-ai-simulation.js"></script>
+    <script src="js/core/rogi-ai-debug.js"></script>
+    <script src="js/core/rogi-narrative.js"></script>
+    <script src="js/core/rogi-conversation.js"></script>
+    <script src="js/core/rogi-world.js"></script>
+    <script src="js/core/flow-map.js"></script>
+    <script src="js/core/flow-chests.js"></script>
+    <script src="js/core/flow-progress.js"></script>
+    <script src="js/core/chest-resolution.js"></script>
+    <script src="js/core/inventory.js"></script>
+    <script src="js/core/encounters.js"></script>
+    <script src="js/core/ui.js"></script>
+    <script src="js/core/ui-run-screens.js"></script>
+    <script src="js/core/ui-meta-screens.js"></script>
+    <script src="js/core/ui-screens.js"></script>
+    <script src="js/core/input.js"></script>
+    <script src="js/engine/chamber.js"></script>
+    <script src="js/engine/chamber-companion.js"></script>
+    <script src="js/core/main.js"></script>
+</body>
+</html>
