@@ -17,6 +17,10 @@ test('build is self-contained and contains only site files and Pages game bundle
   }
   const html = await readFile(path.join(output, 'index.html'), 'utf8');
   assert.doesNotMatch(html, /LifeSim|\/lifesim\/|Попозорился/i);
+  const mergeCard = html.match(/<article class="project-card project-merge-rpg"[^>]*>[\s\S]*?<\/article>/)?.[0];
+  assert.ok(mergeCard, "Merge RPG card is present");
+  assert.doesNotMatch(mergeCard, /заглушк/i);
+  assert.match(mergeCard, /Играть в Merge RPG/);
   for (const value of ['Indie Game Forge', '/deadweed/', '/scroll_hunter/', 'Scroll Hunter', '/dark_pool/', 'Dark Pool', '/rus_vs_yashcher/', 'Русы против ящеров', '/merge_rpg/', 'Merge RPG', 'В РАЗРАБОТКЕ', 'https://t.me/Ucicke', 'https://vk.ru/ibrezh', 'https://www.youtube.com/@Ucicke', 'https://github.com/Ucicke', 'https://t.me/indiegameforge']) {
     assert.ok(html.includes(value), value);
   }
