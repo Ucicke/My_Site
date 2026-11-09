@@ -66,9 +66,8 @@ a:hover .arrow-icon { transform: translate(2px, -2px); }
 .hero-copy, .workspace { min-width: 0; }
 .hero-name { margin-bottom: 24px; font-size: 12px; font-weight: 650; }
 .hero-name > span { color: #7b7d72; margin-left: 7px; font-weight: 400; }
-h1 { font-size: clamp(70px, 7.8vw, 112px); font-weight: 800; line-height: 1.045; letter-spacing: -.075em; }
-.hero-highlight { white-space: nowrap; position: relative; }
-.hero-highlight::after { content: ""; position: absolute; bottom: .07em; left: .015em; right: .05em; height: .14em; background: var(--lime); z-index: -1; }
+h1 { font-size: clamp(48px, 5vw, 76px); font-weight: 800; line-height: 1.045; letter-spacing: -.075em; }
+.hero-highlight { background: linear-gradient(transparent 83%, var(--lime) 83%, var(--lime) 97%, transparent 97%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .hero-period { color: var(--orange); }
 .hero-intro { margin-top: 28px; max-width: 430px; color: #606159; font-size: 16px; line-height: 1.9; }
 .hero-actions { gap: 25px; margin-top: 32px; }
@@ -256,7 +255,6 @@ h3 a:hover { color: #60703b; }
 @media (max-width: 1150px) {
   .site-shell { width: calc(100% - 64px); }
   .hero-grid { gap: 36px; }
-  h1 { font-size: 8vw; }
   .hero-actions { gap: 20px; }
   .hero-actions .text-link { font-size: 10px; }
   .hero-actions .button { padding-left: 16px; gap: 14px; font-size: 11px; }
@@ -277,7 +275,7 @@ h3 a:hover { color: #60703b; }
 @media (max-width: 900px) {
   .hero-grid { grid-template-columns: 1fr; gap: 57px; padding-top: 53px; }
   .hero-copy { max-width: 600px; }
-  h1 { font-size: clamp(76px, 12vw, 104px); }
+  h1 { font-size: clamp(56px, 9vw, 78px); }
   .hero-intro { font-size: 15px; }
   .hero-actions .button { font-size: 12px; padding-left: 22px; gap: 26px; }
   .hero-actions .text-link { font-size: 11px; }
@@ -310,7 +308,8 @@ h3 a:hover { color: #60703b; }
   .site-shell { width: calc(100% - 40px); }
   .header-inner { min-height: 74px; }
   .wordmark { gap: 8px; }
-  .site-header nav { gap: 18px; }
+  .site-header .wordmark-label { font-size: 14px; }
+  .site-header nav { gap: 10px; }
   .nav-link { font-size: 10px; }
   .nav-count { font-size: 8px; margin-left: 1px; }
   .nav-contact { padding: 9px; gap: 0; min-width: 38px; min-height: 38px; justify-content: center; }
@@ -322,7 +321,7 @@ h3 a:hover { color: #60703b; }
   .hero-grid { padding-block: 40px 32px; gap: 44px; }
   .hero-name { font-size: 11px; margin-bottom: 20px; }
   .hero-name > span { font-size: 10px; }
-  h1 { font-size: clamp(53px, 12.9vw, 80px); letter-spacing: -.075em; line-height: 1.09; }
+  h1 { font-size: clamp(42px, 10vw, 64px); letter-spacing: -.075em; line-height: 1.09; }
   .hero-intro { font-size: 14px; line-height: 1.9; margin-top: 23px; max-width: 340px; }
   .hero-actions { margin-top: 26px; gap: 18px; }
   .hero-actions .button { min-height: 56px; font-size: 11px; padding-left: 17px; gap: 18px; }
@@ -382,7 +381,7 @@ h3 a:hover { color: #60703b; }
   .projects-postscript .status-dot { margin-top: 4px; width: 5px; height: 5px; }
   .about-section { padding-top: 58px; }
   .about-grid { grid-template-columns: 1fr; gap: 34px; }
-  .about-section h2 { font-size: clamp(56px, 16.6vw, 66px); }
+  .about-section h2 { font-size: clamp(46px, 14vw, 66px); }
   .about-signature { margin-top: 25px; gap: 14px; font-size: 8px; }
   .signature-mark { font-size: 37px; }
   .signature-alias { font-size: 7px; }
@@ -431,4 +430,8 @@ h3 a:hover { color: #60703b; }
   .magnetic, .terminal, .motion-ready [data-reveal] { transform: none !important; }
   .motion-ready [data-reveal] { opacity: 1; }
   .cover-image { transform: none !important; }
+}
+
+@media (max-width: 480px) {
+  .site-header .nav-link[href="#about"] { display: none; }
 }
