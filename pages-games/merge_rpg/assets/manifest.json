@@ -1,0 +1,1022 @@
+[
+  {
+    "id": "player_character",
+    "type": "image",
+    "file": "assets/player_character.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/f82bb998-27b4-477e-991c-e062d65596b8.webp"
+  },
+  {
+    "id": "enemy_weak",
+    "type": "image",
+    "file": "assets/enemy_weak.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/cf7c5463-aa4e-4a79-ad6a-a3627313f4a8.webp"
+  },
+  {
+    "id": "enemy_medium",
+    "type": "image",
+    "file": "assets/enemy_medium.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/161829c9-1821-4755-a0ef-2ed1cab73125.webp"
+  },
+  {
+    "id": "enemy_strong",
+    "type": "image",
+    "file": "assets/enemy_strong.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/f855a454-a877-4082-b355-d64b3e835224.webp"
+  },
+  {
+    "id": "dagger_icon",
+    "type": "image",
+    "file": "assets/dagger_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/b0b41f4f-f27f-4dd4-a9ff-a64f20dd3b35.webp"
+  },
+  {
+    "id": "sword_icon",
+    "type": "image",
+    "file": "assets/sword_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/c2440f9e-dc38-45e1-8283-dc6cf3305243.webp"
+  },
+  {
+    "id": "greatsword_icon",
+    "type": "image",
+    "file": "assets/greatsword_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/ca15f52f-cbe0-40a8-b6e4-1593bf11ffdc.webp"
+  },
+  {
+    "id": "helmet_icon",
+    "type": "image",
+    "file": "assets/helmet_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/41a1c22d-3bef-4f37-808a-799273905c2c.webp"
+  },
+  {
+    "id": "shield_icon",
+    "type": "image",
+    "file": "assets/shield_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/00d40687-ce23-4ea7-9bd3-1f6d5f8fd662.webp"
+  },
+  {
+    "id": "fullarmor_icon",
+    "type": "image",
+    "file": "assets/fullarmor_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/8f2a9c0a-e61d-47f2-b252-a64f744f1b62.webp"
+  },
+  {
+    "id": "small_potion_icon",
+    "type": "image",
+    "file": "assets/small_potion_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/b65a5139-4d74-4fc3-a141-994f6372a426.webp"
+  },
+  {
+    "id": "medium_potion_icon",
+    "type": "image",
+    "file": "assets/medium_potion_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/07111406-41da-4660-a85b-651b997029aa.webp"
+  },
+  {
+    "id": "large_potion_icon",
+    "type": "image",
+    "file": "assets/large_potion_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/86efd7fd-9661-4c7d-92ea-34d04ea5adb0.webp"
+  },
+  {
+    "id": "spell_scroll_icon",
+    "type": "image",
+    "file": "assets/spell_scroll_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/39089250-0c3a-49b4-9d01-5af852bcdec9.webp"
+  },
+  {
+    "id": "spell_book_icon",
+    "type": "image",
+    "file": "assets/spell_book_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/558e2d6a-313e-4c4d-9cda-40099e060119.webp"
+  },
+  {
+    "id": "grand_tome_icon",
+    "type": "image",
+    "file": "assets/grand_tome_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/f360ada0-c786-435c-8cc4-0aecb1c48ae0.webp"
+  },
+  {
+    "id": "gold_coin_icon",
+    "type": "image",
+    "file": "assets/gold_coin_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/fce390ca-20a3-4aa0-8191-d21d60219a16.webp"
+  },
+  {
+    "id": "treasure_chest_icon",
+    "type": "image",
+    "file": "assets/treasure_chest_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/090125e1-81b9-4464-8da6-af5509c44976.webp"
+  },
+  {
+    "id": "royal_crown_icon",
+    "type": "image",
+    "file": "assets/royal_crown_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/2e92b695-d670-4666-9fa8-8c8f19cb2299.webp"
+  },
+  {
+    "id": "dungeon_background",
+    "type": "image",
+    "file": "assets/dungeon_background.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/8eedd401-0c7f-492b-a513-ec2933407958.webp"
+  },
+  {
+    "id": "merge_sound",
+    "type": "audio",
+    "file": "assets/merge_sound.mp3",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/sounds/sound/f55337d4-336e-4a66-aaaf-9c4f22bf744f.mp3"
+  },
+  {
+    "id": "item_place_sound",
+    "type": "audio",
+    "file": "assets/item_place_sound.mp3",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/sounds/sound/d0d2f6d7-8735-48c9-9299-7b1d63d98b7a.mp3"
+  },
+  {
+    "id": "combat_hit_sound",
+    "type": "audio",
+    "file": "assets/combat_hit_sound.mp3",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/sounds/sound/d45d9ec4-4ffe-483f-91d2-f8ac776fdc75.mp3"
+  },
+  {
+    "id": "victory_sound",
+    "type": "audio",
+    "file": "assets/victory_sound.mp3",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/sounds/sound/1392f02a-6efb-491e-aaa0-f1b81b4afa77.mp3"
+  },
+  {
+    "id": "background_music",
+    "type": "audio",
+    "file": "assets/background_music.mp3",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/sounds/music/a8626f50-aa85-4ae1-987f-564d886323b2.mp3"
+  },
+  {
+    "id": "legendary_blade_icon",
+    "type": "image",
+    "file": "assets/legendary_blade_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/02171bd2-3977-4f8d-a940-c6ee2062e297.webp"
+  },
+  {
+    "id": "mythic_sword_icon",
+    "type": "image",
+    "file": "assets/mythic_sword_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/e599859b-6aec-46fa-8d36-b38be5eae38f.webp"
+  },
+  {
+    "id": "divine_blade_icon",
+    "type": "image",
+    "file": "assets/divine_blade_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/ecd785f0-2427-4fd2-b933-32d9af30291c.webp"
+  },
+  {
+    "id": "cosmic_sword_icon",
+    "type": "image",
+    "file": "assets/cosmic_sword_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/4750e64a-881b-4d8b-8227-41fa007d963b.webp"
+  },
+  {
+    "id": "infinity_blade_icon",
+    "type": "image",
+    "file": "assets/infinity_blade_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/8967235b-3be2-4d08-878e-3efa8852922a.webp"
+  },
+  {
+    "id": "dragonscale_armor_icon",
+    "type": "image",
+    "file": "assets/dragonscale_armor_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/5bdc6c73-fa8c-4ab5-b89c-521bcf4924ec.webp"
+  },
+  {
+    "id": "crystal_armor_icon",
+    "type": "image",
+    "file": "assets/crystal_armor_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/445f44ae-cd9a-481e-94d3-10705bdc38ab.webp"
+  },
+  {
+    "id": "celestial_armor_icon",
+    "type": "image",
+    "file": "assets/celestial_armor_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/11242f54-127c-4682-b897-3f251903b97e.webp"
+  },
+  {
+    "id": "void_armor_icon",
+    "type": "image",
+    "file": "assets/void_armor_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/2c348b9e-380d-44a6-9dc3-f8f02cb14a25.webp"
+  },
+  {
+    "id": "reality_armor_icon",
+    "type": "image",
+    "file": "assets/reality_armor_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/62ee77a6-e758-4527-bfd9-be1fc9795955.webp"
+  },
+  {
+    "id": "greater_potion_icon",
+    "type": "image",
+    "file": "assets/greater_potion_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/71873e65-7d87-4e79-b1de-730ae9858ddc.webp"
+  },
+  {
+    "id": "superior_potion_icon",
+    "type": "image",
+    "file": "assets/superior_potion_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/65bf82e8-6c6d-44f3-92cf-1c198d4bccec.webp"
+  },
+  {
+    "id": "master_potion_icon",
+    "type": "image",
+    "file": "assets/master_potion_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/89d3d50f-57b2-4810-b1aa-73dbebac1640.webp"
+  },
+  {
+    "id": "legendary_potion_icon",
+    "type": "image",
+    "file": "assets/legendary_potion_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/0b30ac1c-63a5-42b4-a971-92b754de24aa.webp"
+  },
+  {
+    "id": "elixir_of_life_icon",
+    "type": "image",
+    "file": "assets/elixir_of_life_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/056a41ca-0507-4798-9331-efbd45e3b8d5.webp"
+  },
+  {
+    "id": "arcane_codex_icon",
+    "type": "image",
+    "file": "assets/arcane_codex_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/1a33aa75-fec6-43cc-8c65-a160d6e83a93.webp"
+  },
+  {
+    "id": "forbidden_grimoire_icon",
+    "type": "image",
+    "file": "assets/forbidden_grimoire_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/ab1e31da-46d1-4923-af80-53fd64b7a419.webp"
+  },
+  {
+    "id": "cosmic_compendium_icon",
+    "type": "image",
+    "file": "assets/cosmic_compendium_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/a11de323-4a21-45dc-a2a2-58223cd26d98.webp"
+  },
+  {
+    "id": "omniscience_tome_icon",
+    "type": "image",
+    "file": "assets/omniscience_tome_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/64a3f4ce-0661-4d08-89ad-fb39941ab537.webp"
+  },
+  {
+    "id": "akashic_records_icon",
+    "type": "image",
+    "file": "assets/akashic_records_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/32968b65-4c54-407c-a9fe-651830f9341c.webp"
+  },
+  {
+    "id": "gem_hoard_icon",
+    "type": "image",
+    "file": "assets/gem_hoard_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/463c716a-0f97-4953-b879-fde5960c619e.webp"
+  },
+  {
+    "id": "dragon_hoard_icon",
+    "type": "image",
+    "file": "assets/dragon_hoard_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/4dbef71a-cb70-49a7-a593-01b680425721.webp"
+  },
+  {
+    "id": "ancient_relic_icon",
+    "type": "image",
+    "file": "assets/ancient_relic_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/74cf8558-9bd6-4812-9e37-44a3696a1160.webp"
+  },
+  {
+    "id": "philosophers_stone_icon",
+    "type": "image",
+    "file": "assets/philosophers_stone_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/6a331a42-4721-40e0-83db-bde386161ca1.webp"
+  },
+  {
+    "id": "infinity_crystal_icon",
+    "type": "image",
+    "file": "assets/infinity_crystal_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/541be7bd-1e45-47a6-a1c2-cbeefcfc2622.webp"
+  },
+  {
+    "id": "troll_enemy",
+    "type": "image",
+    "file": "assets/troll_enemy.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/ae0c69fd-6220-4191-b54f-a1d8e5653c35.webp"
+  },
+  {
+    "id": "lich_enemy",
+    "type": "image",
+    "file": "assets/lich_enemy.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/95b6d71a-9131-4435-a85b-d6d9b2dc3075.webp"
+  },
+  {
+    "id": "demon_enemy",
+    "type": "image",
+    "file": "assets/demon_enemy.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/0db35d8e-16f0-4fda-ac6d-21930e95bb62.webp"
+  },
+  {
+    "id": "ancient_dragon_enemy",
+    "type": "image",
+    "file": "assets/ancient_dragon_enemy.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/2863a81b-79da-4608-98df-361c5e9cfc83.webp"
+  },
+  {
+    "id": "void_lord_enemy",
+    "type": "image",
+    "file": "assets/void_lord_enemy.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/be63770e-f0b2-4e65-ab66-3e46e0e8ca24.webp"
+  },
+  {
+    "id": "refresh_button_icon",
+    "type": "image",
+    "file": "assets/refresh_button_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/7272a60f-513a-42ca-8c2e-3c4ca0c35ea2.webp"
+  },
+  {
+    "id": "add_row_button_icon",
+    "type": "image",
+    "file": "assets/add_row_button_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/3b57d57a-e289-4356-ba0e-6c13ff22061b.webp"
+  },
+  {
+    "id": "add_column_button_icon",
+    "type": "image",
+    "file": "assets/add_column_button_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/ad949b1f-9782-4e46-ba57-041c7b5ec95f.webp"
+  },
+  {
+    "id": "button_background_texture",
+    "type": "image",
+    "file": "assets/button_background_texture.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/c0bbdab0-f39f-4f26-9354-968b8c9db347.webp"
+  },
+  {
+    "id": "refresh_button_bg",
+    "type": "image",
+    "file": "assets/refresh_button_bg.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/013e9203-2fa4-4277-b467-9182a27ecfd9.webp"
+  },
+  {
+    "id": "expand_row_button_bg",
+    "type": "image",
+    "file": "assets/expand_row_button_bg.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/e72b142d-0f77-4cd2-8906-9ee2bde20d4e.webp"
+  },
+  {
+    "id": "expand_column_button_bg",
+    "type": "image",
+    "file": "assets/expand_column_button_bg.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/a78fe7a7-9312-4201-ab39-dd71b50e618e.webp"
+  },
+  {
+    "id": "wand_tier1_icon",
+    "type": "image",
+    "file": "assets/wand_tier1_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/1037ea35-dea2-4415-8adf-249ed5b1d0a0.webp"
+  },
+  {
+    "id": "wand_tier2_icon",
+    "type": "image",
+    "file": "assets/wand_tier2_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/5aedb89e-ba98-4f8e-aa20-bb7fce3d8368.webp"
+  },
+  {
+    "id": "wand_tier3_icon",
+    "type": "image",
+    "file": "assets/wand_tier3_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/307d5ff9-00f7-42bd-9076-70c70a5be03f.webp"
+  },
+  {
+    "id": "wand_tier4_icon",
+    "type": "image",
+    "file": "assets/wand_tier4_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/8bfc37bc-90bf-423d-bde0-909497667085.webp"
+  },
+  {
+    "id": "wand_tier5_icon",
+    "type": "image",
+    "file": "assets/wand_tier5_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/b0b9dae9-f2b1-45dc-87b8-4044c4b42226.webp"
+  },
+  {
+    "id": "wand_tier6_icon",
+    "type": "image",
+    "file": "assets/wand_tier6_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/7106d2a5-791a-4063-af78-e7dbecbfc620.webp"
+  },
+  {
+    "id": "wand_tier7_icon",
+    "type": "image",
+    "file": "assets/wand_tier7_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/c3b36dd4-3ad3-445d-813c-75506ee65565.webp"
+  },
+  {
+    "id": "wand_tier8_icon",
+    "type": "image",
+    "file": "assets/wand_tier8_icon.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/21230a42-fefd-42e3-939a-adaec6060ba8.webp"
+  },
+  {
+    "id": "wooden_wand_new",
+    "type": "image",
+    "file": "assets/wooden_wand_new.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/7204e5e4-c650-494b-8865-4e68785dd898.webp"
+  },
+  {
+    "id": "enemy_weak_fixed",
+    "type": "image",
+    "file": "assets/enemy_weak_fixed.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/9a55a875-1e95-4a24-a074-de682946038a.webp"
+  },
+  {
+    "id": "enemy_medium_fixed",
+    "type": "image",
+    "file": "assets/enemy_medium_fixed.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/7906da25-3680-4cec-a1da-f653bf3faef8.webp"
+  },
+  {
+    "id": "goblin_enemy_new",
+    "type": "image",
+    "file": "assets/goblin_enemy_new.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/60c020e2-af3b-4f92-b6ca-476ed069c44b.webp"
+  },
+  {
+    "id": "skeleton_warrior_enemy",
+    "type": "image",
+    "file": "assets/skeleton_warrior_enemy.webp",
+    "url": "https://d1xpujz444k1uo.cloudfront.net/assets/images/gpt/e4e8804b-1db4-4849-8746-789f9551c066.webp"
+  },
+  {
+    "id": "leather_armor_icon",
+    "type": "image",
+    "file": "assets/leather_armor_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/cd045d8c-b2ab-4d8e-81db-e4e312d3bd70.webp"
+  },
+  {
+    "id": "iron_armor_icon",
+    "type": "image",
+    "file": "assets/iron_armor_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/88540a0c-669b-4917-b150-ec63ccc3a057.webp"
+  },
+  {
+    "id": "elven_armor_icon",
+    "type": "image",
+    "file": "assets/elven_armor_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/2295161f-950a-4d4a-8a1d-4306470cacce.webp"
+  },
+  {
+    "id": "obsidian_armor_icon",
+    "type": "image",
+    "file": "assets/obsidian_armor_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/36ecf1da-1b25-4afc-bd08-5594d81b26df.webp"
+  },
+  {
+    "id": "dwarven_armor_icon",
+    "type": "image",
+    "file": "assets/dwarven_armor_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/8f7c33e3-1ae9-4411-b66f-d4a3f6461071.webp"
+  },
+  {
+    "id": "mithril_armor_icon",
+    "type": "image",
+    "file": "assets/mithril_armor_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/ad4b7b28-24ce-4dd7-808a-f2e612301d5d.webp"
+  },
+  {
+    "id": "adamantite_armor_icon",
+    "type": "image",
+    "file": "assets/adamantite_armor_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/4af41c08-a006-4648-a4e4-a464ef8848c9.webp"
+  },
+  {
+    "id": "dragon_armor_icon",
+    "type": "image",
+    "file": "assets/dragon_armor_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/5f82cdcd-9b4b-49b6-b695-38f76f503e4e.webp"
+  },
+  {
+    "id": "orc_warrior_large",
+    "type": "image",
+    "file": "assets/orc_warrior_large.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/9dbd40aa-f9de-4a40-b394-f4dacaf9a948.webp"
+  },
+  {
+    "id": "rusty_sword_icon",
+    "type": "image",
+    "file": "assets/rusty_sword_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/3a6658e0-7f74-49c6-a37b-ec0169127036.webp"
+  },
+  {
+    "id": "iron_sword_icon",
+    "type": "image",
+    "file": "assets/iron_sword_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/d1f0ee01-305d-4251-9a50-6a2cef142e7a.webp"
+  },
+  {
+    "id": "elven_sword_icon",
+    "type": "image",
+    "file": "assets/elven_sword_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/01f8ea73-e19b-4cf7-a66c-2f785b6c353f.webp"
+  },
+  {
+    "id": "obsidian_sword_icon",
+    "type": "image",
+    "file": "assets/obsidian_sword_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/255cf143-4857-4235-8c85-00fc76717f8b.webp"
+  },
+  {
+    "id": "dwarven_sword_icon",
+    "type": "image",
+    "file": "assets/dwarven_sword_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/3ae5db03-1277-445f-b1aa-6e8a6ec4e40d.webp"
+  },
+  {
+    "id": "mithril_sword_icon",
+    "type": "image",
+    "file": "assets/mithril_sword_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/12ffcd9c-6fb9-4894-a274-4d1a4aeeac5b.webp"
+  },
+  {
+    "id": "adamantite_sword_icon",
+    "type": "image",
+    "file": "assets/adamantite_sword_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/02466602-a7d1-432a-a87b-93811ec20299.webp"
+  },
+  {
+    "id": "battle_mage_engineer_player",
+    "type": "image",
+    "file": "assets/battle_mage_engineer_player.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/c4ef27b7-f3d0-4946-8c87-c7a6771dcfa6.webp"
+  },
+  {
+    "id": "seamless_background_music",
+    "type": "audio",
+    "file": "assets/seamless_background_music.mp3",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/sounds/music/19935b2c-3538-41f3-9ad0-cbb24dc5339f.mp3"
+  },
+  {
+    "id": "miss_sound",
+    "type": "audio",
+    "file": "assets/miss_sound.mp3",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/sounds/effect/06e5ee7c-ec33-42c6-bd58-53fd69bcc998.mp3"
+  },
+  {
+    "id": "ancient_dragon_enemy_fixed",
+    "type": "image",
+    "file": "assets/ancient_dragon_enemy_fixed.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/9ec8e885-a639-4a96-b76f-5f83560b6951.webp"
+  },
+  {
+    "id": "battle_mage_engineer_player_new",
+    "type": "image",
+    "file": "assets/battle_mage_engineer_player_new.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/0515d698-1449-45c2-be8c-ad40cff198eb.webp"
+  },
+  {
+    "id": "deep_fantasy_background_music",
+    "type": "audio",
+    "file": "assets/deep_fantasy_background_music.mp3",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/sounds/music/03ef6b4c-e8b0-4666-b926-09f8aafde4b7.mp3"
+  },
+  {
+    "id": "battle_mage_defensive_stance",
+    "type": "image",
+    "file": "assets/battle_mage_defensive_stance.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/e2542f80-3e9b-4ac2-9a82-61e3be219cf2.webp"
+  },
+  {
+    "id": "battle_mage_balanced_stance",
+    "type": "image",
+    "file": "assets/battle_mage_balanced_stance.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/0664a8a9-bebe-4320-b4bd-1b4fba3570fd.webp"
+  },
+  {
+    "id": "battle_mage_aggressive_stance",
+    "type": "image",
+    "file": "assets/battle_mage_aggressive_stance.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/bc55180c-d227-4cec-9a75-9d258ae75d7a.webp"
+  },
+  {
+    "id": "battle_music",
+    "type": "audio",
+    "file": "assets/battle_music.mp3",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/sounds/music/2620796a-2e15-4a09-84f5-b78a3d386e15.mp3"
+  },
+  {
+    "id": "red_potion_tier1",
+    "type": "image",
+    "file": "assets/red_potion_tier1.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/53803262-ad46-43b4-939d-31e2ea6ec898.webp"
+  },
+  {
+    "id": "red_potion_tier2",
+    "type": "image",
+    "file": "assets/red_potion_tier2.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/347f072e-966d-4ccc-bc70-e3a06e1c8d83.webp"
+  },
+  {
+    "id": "red_potion_tier3",
+    "type": "image",
+    "file": "assets/red_potion_tier3.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/d147aabb-38b4-42f5-86c9-47606e08f9ce.webp"
+  },
+  {
+    "id": "red_potion_tier4",
+    "type": "image",
+    "file": "assets/red_potion_tier4.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/a4c084ac-94bb-4bb7-9c8a-2de2c81f656e.webp"
+  },
+  {
+    "id": "red_potion_tier5",
+    "type": "image",
+    "file": "assets/red_potion_tier5.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/721dd350-fb7b-4971-8eb7-5de74e16c2a4.webp"
+  },
+  {
+    "id": "red_potion_tier6",
+    "type": "image",
+    "file": "assets/red_potion_tier6.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/9a21333d-ee22-4aa6-b58d-cbfa8cfd86cf.webp"
+  },
+  {
+    "id": "red_potion_tier7",
+    "type": "image",
+    "file": "assets/red_potion_tier7.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/ab3d5591-e2dd-4c22-979f-e03111516dd3.webp"
+  },
+  {
+    "id": "red_potion_tier8",
+    "type": "image",
+    "file": "assets/red_potion_tier8.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/8b5d99c4-8c79-462c-87fc-47db5c20771f.webp"
+  },
+  {
+    "id": "magic_wand_tier1_vertical",
+    "type": "image",
+    "file": "assets/magic_wand_tier1_vertical.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/a6df228d-abb3-4bd0-8f35-044a7cb770df.webp"
+  },
+  {
+    "id": "magic_wand_tier2_vertical",
+    "type": "image",
+    "file": "assets/magic_wand_tier2_vertical.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/b5a57184-aff7-4155-974c-94b4458f51d1.webp"
+  },
+  {
+    "id": "magic_wand_tier3_vertical",
+    "type": "image",
+    "file": "assets/magic_wand_tier3_vertical.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/9c169fb0-85f0-4717-802a-c38b3e1b3082.webp"
+  },
+  {
+    "id": "magic_wand_tier4_vertical",
+    "type": "image",
+    "file": "assets/magic_wand_tier4_vertical.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/3ee20678-b644-498f-830e-0261ba2354ee.webp"
+  },
+  {
+    "id": "magic_wand_tier5_vertical",
+    "type": "image",
+    "file": "assets/magic_wand_tier5_vertical.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/183d538f-601c-4924-b9d9-84f2433a2543.webp"
+  },
+  {
+    "id": "magic_wand_tier6_vertical",
+    "type": "image",
+    "file": "assets/magic_wand_tier6_vertical.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/ed5a965f-934d-468f-81ae-9ccb241b002e.webp"
+  },
+  {
+    "id": "magic_wand_tier7_vertical",
+    "type": "image",
+    "file": "assets/magic_wand_tier7_vertical.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/4f634cbd-e8e7-41b6-ba23-460fc368d21e.webp"
+  },
+  {
+    "id": "magic_wand_tier8_vertical",
+    "type": "image",
+    "file": "assets/magic_wand_tier8_vertical.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/ae6ddfad-aa92-4de2-8a9e-f93f97eae6cc.webp"
+  },
+  {
+    "id": "dragon_armor_infinity_icon",
+    "type": "image",
+    "file": "assets/dragon_armor_infinity_icon.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/85ac3685-71b9-4d84-9cab-67a10ff0b4a3.webp"
+  },
+  {
+    "id": "skeleton_warrior_dark",
+    "type": "image",
+    "file": "assets/skeleton_warrior_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/a431e407-b25a-4c00-a6b8-42f4d0626d94.webp"
+  },
+  {
+    "id": "orc_warrior_dark",
+    "type": "image",
+    "file": "assets/orc_warrior_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/04e63f6a-77bb-4932-a78c-2bab7b7633ff.webp"
+  },
+  {
+    "id": "dragon_dark",
+    "type": "image",
+    "file": "assets/dragon_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/ba588300-8818-4af2-b42c-fd917b07edb2.webp"
+  },
+  {
+    "id": "cave_troll_dark",
+    "type": "image",
+    "file": "assets/cave_troll_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/4c17c5df-b861-4a3a-9b79-4b9b227e7c30.webp"
+  },
+  {
+    "id": "lich_sorcerer_dark",
+    "type": "image",
+    "file": "assets/lich_sorcerer_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/9e3423e8-c242-465b-b90e-58c47b3e8632.webp"
+  },
+  {
+    "id": "infernal_demon_dark",
+    "type": "image",
+    "file": "assets/infernal_demon_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/d6fe1bc7-4a96-4bb2-b433-9d18cac30f1d.webp"
+  },
+  {
+    "id": "ancient_dragon_dark",
+    "type": "image",
+    "file": "assets/ancient_dragon_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/319309c7-7496-46ce-a716-afa48aa5fe88.webp"
+  },
+  {
+    "id": "void_lord_dark",
+    "type": "image",
+    "file": "assets/void_lord_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/52dc6658-9c04-4a34-87c7-d77fdd64532c.webp"
+  },
+  {
+    "id": "rusty_sword_dark",
+    "type": "image",
+    "file": "assets/rusty_sword_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/0fe7575a-fefb-426c-a014-0c82c641c2a6.webp"
+  },
+  {
+    "id": "iron_sword_dark",
+    "type": "image",
+    "file": "assets/iron_sword_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/b6709101-2442-47aa-9264-f893c5b73c68.webp"
+  },
+  {
+    "id": "elven_sword_dark",
+    "type": "image",
+    "file": "assets/elven_sword_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/02b906a9-65f4-4f00-843e-48be4b245542.webp"
+  },
+  {
+    "id": "obsidian_sword_dark",
+    "type": "image",
+    "file": "assets/obsidian_sword_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/22e94468-cb31-4fb5-8196-49608ebec4dc.webp"
+  },
+  {
+    "id": "dwarven_sword_dark",
+    "type": "image",
+    "file": "assets/dwarven_sword_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/a252733c-4e9d-4fb0-b031-a4ccc088624e.webp"
+  },
+  {
+    "id": "mithril_sword_dark",
+    "type": "image",
+    "file": "assets/mithril_sword_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/b6e0413c-9f50-4c12-9f7e-bf7bc93a0d8d.webp"
+  },
+  {
+    "id": "adamantite_sword_dark",
+    "type": "image",
+    "file": "assets/adamantite_sword_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/edbb75be-48dc-456d-a612-c8bcac0bca2a.webp"
+  },
+  {
+    "id": "infinity_blade_dark",
+    "type": "image",
+    "file": "assets/infinity_blade_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/1ed465c1-885d-4aab-a980-612a4af6d718.webp"
+  },
+  {
+    "id": "leather_armor_dark",
+    "type": "image",
+    "file": "assets/leather_armor_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/2786673c-ae09-45f5-98c4-18d83bc67e32.webp"
+  },
+  {
+    "id": "iron_armor_dark",
+    "type": "image",
+    "file": "assets/iron_armor_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/4aff7df9-2bce-4e9e-b0c3-4e5a3ff47d3e.webp"
+  },
+  {
+    "id": "elven_armor_dark",
+    "type": "image",
+    "file": "assets/elven_armor_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/41085ffc-11ca-4c12-91f1-1acfaec4dca0.webp"
+  },
+  {
+    "id": "obsidian_armor_dark",
+    "type": "image",
+    "file": "assets/obsidian_armor_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/3d81ade1-c534-4cda-8561-1e2586666448.webp"
+  },
+  {
+    "id": "dwarven_armor_dark",
+    "type": "image",
+    "file": "assets/dwarven_armor_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/397d4ced-80da-4b3e-a4c1-408344af444a.webp"
+  },
+  {
+    "id": "mithril_armor_dark",
+    "type": "image",
+    "file": "assets/mithril_armor_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/ea8cbb70-31be-4f3d-8451-30add54c50bc.webp"
+  },
+  {
+    "id": "adamantite_armor_dark",
+    "type": "image",
+    "file": "assets/adamantite_armor_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/5c34223a-562b-4c2b-b808-06f6b31efb64.webp"
+  },
+  {
+    "id": "dragon_armor_dark",
+    "type": "image",
+    "file": "assets/dragon_armor_dark.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/557d5b27-aa6a-4e68-b1c3-2a6788de0ede.webp"
+  },
+  {
+    "id": "red_potion_dark_tier1",
+    "type": "image",
+    "file": "assets/red_potion_dark_tier1.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/788b96a4-9ef0-43e0-81bd-9f5fffc6043d.webp"
+  },
+  {
+    "id": "red_potion_dark_tier2",
+    "type": "image",
+    "file": "assets/red_potion_dark_tier2.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/f3501bbf-7130-4104-b91c-8271a1ffb8dc.webp"
+  },
+  {
+    "id": "red_potion_dark_tier3",
+    "type": "image",
+    "file": "assets/red_potion_dark_tier3.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/2c9e2772-fc83-48c3-8dfd-382e39ec2da3.webp"
+  },
+  {
+    "id": "red_potion_dark_tier4",
+    "type": "image",
+    "file": "assets/red_potion_dark_tier4.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/feba4442-7298-40fd-9d6a-0a8d7887ed36.webp"
+  },
+  {
+    "id": "red_potion_dark_tier5",
+    "type": "image",
+    "file": "assets/red_potion_dark_tier5.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/878e2623-aba2-498b-abdb-1ce638b64253.webp"
+  },
+  {
+    "id": "red_potion_dark_tier6",
+    "type": "image",
+    "file": "assets/red_potion_dark_tier6.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/98f75ae7-9c60-4ea7-a343-080206685290.webp"
+  },
+  {
+    "id": "red_potion_dark_tier7",
+    "type": "image",
+    "file": "assets/red_potion_dark_tier7.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/e4e207bd-52f4-48af-9bc8-b34f34dfc89c.webp"
+  },
+  {
+    "id": "red_potion_dark_tier8",
+    "type": "image",
+    "file": "assets/red_potion_dark_tier8.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/3428e423-f98d-4426-93fd-2f51438cd035.webp"
+  },
+  {
+    "id": "magic_wand_dark_tier1",
+    "type": "image",
+    "file": "assets/magic_wand_dark_tier1.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/bb23e132-f295-437e-85f1-97708acedd15.webp"
+  },
+  {
+    "id": "magic_wand_dark_tier2",
+    "type": "image",
+    "file": "assets/magic_wand_dark_tier2.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/54a72ef5-afc2-4cf0-89f4-7c698e115676.webp"
+  },
+  {
+    "id": "magic_wand_dark_tier3",
+    "type": "image",
+    "file": "assets/magic_wand_dark_tier3.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/7e32db4a-c960-4860-88aa-87a9b432e4a8.webp"
+  },
+  {
+    "id": "magic_wand_dark_tier4",
+    "type": "image",
+    "file": "assets/magic_wand_dark_tier4.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/31701c13-9c58-432d-98cf-4c34847da00b.webp"
+  },
+  {
+    "id": "magic_wand_dark_tier5",
+    "type": "image",
+    "file": "assets/magic_wand_dark_tier5.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/9988f1a6-d972-4279-b1eb-a67c90eacedc.webp"
+  },
+  {
+    "id": "magic_wand_dark_tier6",
+    "type": "image",
+    "file": "assets/magic_wand_dark_tier6.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/a157946b-bfc1-498c-9f34-3bf714c2f7e3.webp"
+  },
+  {
+    "id": "magic_wand_dark_tier7",
+    "type": "image",
+    "file": "assets/magic_wand_dark_tier7.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/9b7ebc75-27f1-474e-93f3-a806b47372da.webp"
+  },
+  {
+    "id": "magic_wand_dark_tier8",
+    "type": "image",
+    "file": "assets/magic_wand_dark_tier8.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/1ae23011-bea0-49e1-80f2-5dcb2f9270b8.webp"
+  },
+  {
+    "id": "orc_warrior_left_facing",
+    "type": "image",
+    "file": "assets/orc_warrior_left_facing.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/62b913a6-81c0-4f57-b163-6483de9abc46.webp"
+  },
+  {
+    "id": "rusty_sword_diagonal",
+    "type": "image",
+    "file": "assets/rusty_sword_diagonal.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/d0d92a21-30e4-46ed-8b43-c876694a0b92.webp"
+  },
+  {
+    "id": "iron_sword_diagonal",
+    "type": "image",
+    "file": "assets/iron_sword_diagonal.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/233e62e4-1565-47cd-934c-bd8e44ea02ef.webp"
+  },
+  {
+    "id": "elven_sword_diagonal",
+    "type": "image",
+    "file": "assets/elven_sword_diagonal.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/117f216a-2459-43f2-a036-7198e9e1465d.webp"
+  },
+  {
+    "id": "obsidian_sword_diagonal",
+    "type": "image",
+    "file": "assets/obsidian_sword_diagonal.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/916a87fa-ae47-48fb-9286-752e6f675323.webp"
+  },
+  {
+    "id": "dwarven_sword_diagonal",
+    "type": "image",
+    "file": "assets/dwarven_sword_diagonal.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/88de7613-ef4f-4123-9db5-b12412f1146f.webp"
+  },
+  {
+    "id": "mithril_sword_diagonal",
+    "type": "image",
+    "file": "assets/mithril_sword_diagonal.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/b92175b3-06f0-449a-bf25-467fc3455025.webp"
+  },
+  {
+    "id": "adamantite_sword_diagonal",
+    "type": "image",
+    "file": "assets/adamantite_sword_diagonal.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/d35d3a05-7991-4e54-9d11-da63f414c4d1.webp"
+  },
+  {
+    "id": "infinity_blade_diagonal",
+    "type": "image",
+    "file": "assets/infinity_blade_diagonal.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/0b4297ca-2519-4436-aab0-aa9c02a7fdf9.webp"
+  },
+  {
+    "id": "rusty_sword_dark_new",
+    "type": "image",
+    "file": "assets/rusty_sword_dark_new.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/649b9bae-9110-412f-910c-0ab6de9f08fd.webp"
+  },
+  {
+    "id": "lich_sorcerer_left_facing",
+    "type": "image",
+    "file": "assets/lich_sorcerer_left_facing.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/gpt/b8436e35-aa44-4449-83df-6b30f32f77a3.webp"
+  },
+  {
+    "id": "leather_armor_dark_new",
+    "type": "image",
+    "file": "assets/leather_armor_dark_new.webp",
+    "url": "https://d2oir5eh8rty2e.cloudfront.net/assets/images/b5e8357d-5908-476e-a063-efcc8ee876c0.webp"
+  }
+]

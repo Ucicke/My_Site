@@ -1,0 +1,49 @@
+:root {
+              /* Animation Timings */
+              --transition-fast: 150ms;
+              --transition-normal: 300ms;
+              --transition-slow: 500ms;
+
+              /* Easing Functions */
+              --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+              --ease-bounce: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+              /* Spacing Scale (8px grid) */
+              --space-xs: 8px;
+              --space-sm: 16px;
+              --space-md: 24px;
+              --space-lg: 32px;
+              --space-xl: 48px;
+
+              /* Deep Dark Fantasy Color System */
+              --color-primary: #8b7355;
+              --color-primary-hover: #a0845f;
+              --color-primary-active: #6b5a45;
+              --color-surface: #0f0f0f;
+              --color-surface-elevated: #080808;
+              --color-border: #1a1a1a;
+              --color-text: #c0c0c0;
+              --color-text-secondary: #909090;
+              --color-text-muted: #606060;
+
+              /* Dark Fantasy Item Colors */
+              --color-weapon: #8b0000;
+              --color-armor: #404040;
+              --color-potion: #2d5016;
+              --color-magic: #2a2a4a;
+
+              /* Deep Shadows & Effects */
+              --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.9);
+              --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.95);
+              --shadow-lg: 0 8px 40px rgba(0, 0, 0, 1.0);
+              --glow-primary: 0 0 15px rgba(139, 115, 85, 0.3);
+              --glow-torch: 0 0 25px rgba(80, 60, 20, 0.2);
+
+              /* Deep Dark Textures */
+              --stone-dark: #0a0a0a;
+              --stone-medium: #151515;
+              --stone-light: #202020;
+              --iron-dark: #0f0f0f;
+              --iron-rust: #1a1a1a;
+              --leather-brown: #1a1510;
+          }
