@@ -12,7 +12,6 @@ export const siteFiles = [
   'site-assets/site.js',
   'site-assets/brand-mark.svg',
   'site-assets/favicon.svg',
-  'site-assets/cover-lifesim.svg',
   'site-assets/cover-deadweed.svg',
   'site-assets/cover-scroll-hunter.svg',
   'site-assets/cover-dark-pool.svg',
@@ -20,7 +19,7 @@ export const siteFiles = [
   'site-assets/cover-merge-rpg.svg',
 ];
 const execute = promisify(execFile);
-const gameRoutes = ['/lifesim/', '/deadweed/', '/scroll_hunter/', '/dark_pool/', '/rus_vs_yashcher/', '/merge_rpg/'];
+const gameRoutes = ['/deadweed/', '/scroll_hunter/', '/dark_pool/', '/rus_vs_yashcher/', '/merge_rpg/'];
 export const pageGameBundles = [
   { slug: 'deadweed', source: 'pages-games/deadweed' },
   { slug: 'scroll_hunter', source: 'pages-games/scroll_hunter' },

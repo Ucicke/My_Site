@@ -16,7 +16,8 @@ test('build is self-contained and contains only site files and Pages game bundle
     assert.equal(await readFile(path.join(output, file), 'utf8'), await readFile(path.join(projectRoot, file), 'utf8'));
   }
   const html = await readFile(path.join(output, 'index.html'), 'utf8');
-  for (const value of ['Иван Брежнев', '/lifesim/', '/deadweed/', '/scroll_hunter/', 'Scroll Hunter', '/dark_pool/', 'Dark Pool', '/rus_vs_yashcher/', 'Русы против ящеров', '/merge_rpg/', 'Merge RPG', 'В РАЗРАБОТКЕ', 'https://t.me/Ucicke', 'https://vk.ru/ibrezh', 'https://www.youtube.com/@Ucicke', 'https://github.com/Ucicke', 'https://t.me/indiegameforge']) {
+  assert.doesNotMatch(html, /LifeSim|\/lifesim\/|Попозорился/i);
+  for (const value of ['Indie Game Forge', '/deadweed/', '/scroll_hunter/', 'Scroll Hunter', '/dark_pool/', 'Dark Pool', '/rus_vs_yashcher/', 'Русы против ящеров', '/merge_rpg/', 'Merge RPG', 'В РАЗРАБОТКЕ', 'https://t.me/Ucicke', 'https://vk.ru/ibrezh', 'https://www.youtube.com/@Ucicke', 'https://github.com/Ucicke', 'https://t.me/indiegameforge']) {
     assert.ok(html.includes(value), value);
   }
   for (const { slug } of pageGameBundles) {
@@ -48,7 +49,6 @@ test('build publishes static games under the GitHub Pages project URL', async ()
   assert.ok(html.includes(`href="/indie-game-forge/site-assets/styles.css?v=${cssVersion}"`));
   assert.ok(html.includes('src="/indie-game-forge/site-assets/cover-rus-vs-yashcher.svg?v='));
   assert.ok(html.includes('src="/indie-game-forge/site-assets/cover-merge-rpg.svg?v='));
-  assert.ok(html.includes('href="https://ucicke.ru/lifesim/"'));
   for (const { slug } of pageGameBundles) {
     assert.ok(html.includes(`href="/indie-game-forge/${slug}/"`), slug);
     assert.ok((await readdir(path.join(output, slug))).includes('index.html'), slug);
@@ -77,11 +77,10 @@ test('root and GitHub Pages builds publish the accessible Indie Game Forge locku
   assert.match(rootHtml, /aria-label="Indie Game Forge, в начало страницы"/);
   assert.match(rootHtml, /property="og:site_name" content="Indie Game Forge"/);
   assert.match(rootHtml, /Indie Game Forge/);
-  assert.match(rootHtml, /Иван Брежнев/);
-  assert.match(rootHtml, /https:\/\/ucicke\.ru\//);
-  assert.match(rootHtml, /Игры\s*<span[^>]*>\(06\)<\/span>/);
+  assert.match(rootHtml, /https:\/\/ucicke\.github\.io\/indie-game-forge\//);
+  assert.match(rootHtml, /Игры\s*<span[^>]*>\(05\)<\/span>/);
   assert.match(rootHtml, /aria-label="Написать в Telegram"/);
-  for (const route of ['/lifesim/', '/deadweed/', '/scroll_hunter/', '/dark_pool/', '/rus_vs_yashcher/', '/merge_rpg/']) {
+  for (const route of ['/deadweed/', '/scroll_hunter/', '/dark_pool/', '/rus_vs_yashcher/', '/merge_rpg/']) {
     assert.ok(rootHtml.includes(route), route);
   }
   const mark = await readFile(path.join(rootOutput, 'site-assets', 'brand-mark.svg'), 'utf8');
