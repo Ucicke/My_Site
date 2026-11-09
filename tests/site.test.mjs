@@ -10,13 +10,13 @@ test('build is self-contained and contains only site files and Pages game bundle
   const output = await mkdtemp(path.join(os.tmpdir(), 'ucicke-site-'));
   await build(output);
   assert.deepEqual((await readdir(output)).sort(), [
-    'dark_pool', 'deadweed', 'index.html', 'rus_vs_yashcher', 'scroll_hunter', 'site-assets'
+    'dark_pool', 'deadweed', 'index.html', 'merge_rpg', 'rus_vs_yashcher', 'scroll_hunter', 'site-assets'
   ]);
   for (const file of siteFiles.filter((name) => !['index.html', 'site-assets/styles.css'].includes(name))) {
     assert.equal(await readFile(path.join(output, file), 'utf8'), await readFile(path.join(projectRoot, file), 'utf8'));
   }
   const html = await readFile(path.join(output, 'index.html'), 'utf8');
-  for (const value of ['Иван Брежнев', '/lifesim/', '/deadweed/', '/scroll_hunter/', 'Scroll Hunter', '/dark_pool/', 'Dark Pool', '/rus_vs_yashcher/', 'Русы против ящеров', 'https://t.me/Ucicke', 'https://vk.ru/ibrezh', 'https://www.youtube.com/@Ucicke', 'https://github.com/Ucicke', 'https://t.me/indiegameforge']) {
+  for (const value of ['Иван Брежнев', '/lifesim/', '/deadweed/', '/scroll_hunter/', 'Scroll Hunter', '/dark_pool/', 'Dark Pool', '/rus_vs_yashcher/', 'Русы против ящеров', '/merge_rpg/', 'Merge RPG', 'В РАЗРАБОТКЕ', 'https://t.me/Ucicke', 'https://vk.ru/ibrezh', 'https://www.youtube.com/@Ucicke', 'https://github.com/Ucicke', 'https://t.me/indiegameforge']) {
     assert.ok(html.includes(value), value);
   }
   for (const { slug } of pageGameBundles) {
@@ -47,13 +47,14 @@ test('build publishes static games under the GitHub Pages project URL', async ()
   assert.ok(html.includes('href="/My_Site/" aria-label="Ucicke, главная"'));
   assert.ok(html.includes(`href="/My_Site/site-assets/styles.css?v=${cssVersion}"`));
   assert.ok(html.includes('src="/My_Site/site-assets/cover-rus-vs-yashcher.svg?v='));
+  assert.ok(html.includes('src="/My_Site/site-assets/cover-merge-rpg.svg?v='));
   assert.ok(html.includes('href="https://ucicke.ru/lifesim/"'));
   for (const { slug } of pageGameBundles) {
     assert.ok(html.includes(`href="/My_Site/${slug}/"`), slug);
     assert.ok((await readdir(path.join(output, slug))).includes('index.html'), slug);
   }
-  assert.doesNotMatch(html, /href="https:\/\/ucicke\.ru\/(?:deadweed|scroll_hunter|rus_vs_yashcher)\//);
-  assert.doesNotMatch(html, /href="\/(?:lifesim|deadweed|scroll_hunter|dark_pool|rus_vs_yashcher)\//);
+  assert.doesNotMatch(html, /href="https:\/\/ucicke\.ru\/(?:deadweed|scroll_hunter|rus_vs_yashcher|merge_rpg)\//);
+  assert.doesNotMatch(html, /href="\/(?:lifesim|deadweed|scroll_hunter|dark_pool|rus_vs_yashcher|merge_rpg)\//);
 });
 
 test('deployment publishes only site-owned links under a shared lock', async () => {

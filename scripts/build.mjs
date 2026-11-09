@@ -16,14 +16,16 @@ export const siteFiles = [
   'site-assets/cover-scroll-hunter.svg',
   'site-assets/cover-dark-pool.svg',
   'site-assets/cover-rus-vs-yashcher.svg',
+  'site-assets/cover-merge-rpg.svg',
 ];
 const execute = promisify(execFile);
-const gameRoutes = ['/lifesim/', '/deadweed/', '/scroll_hunter/', '/dark_pool/', '/rus_vs_yashcher/'];
+const gameRoutes = ['/lifesim/', '/deadweed/', '/scroll_hunter/', '/dark_pool/', '/rus_vs_yashcher/', '/merge_rpg/'];
 export const pageGameBundles = [
   { slug: 'deadweed', source: 'pages-games/deadweed' },
   { slug: 'scroll_hunter', source: 'pages-games/scroll_hunter' },
   { slug: 'dark_pool', source: 'pages-games/dark_pool' },
   { slug: 'rus_vs_yashcher', source: 'pages-games/rus_vs_yashcher' },
+  { slug: 'merge_rpg', source: 'pages-games/merge_rpg' },
 ];
 
 function normalizeBasePath(value) {

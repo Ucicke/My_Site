@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)]
-    [ValidateSet('deadweed', 'scroll_hunter', 'dark_pool', 'rus_vs_yashcher')]
+    [ValidateSet('deadweed', 'scroll_hunter', 'dark_pool', 'rus_vs_yashcher', 'merge_rpg')]
     [string]$Game,
 
     [Parameter(Mandatory)]
@@ -108,6 +108,12 @@ switch ($Game) {
         New-Item -ItemType Directory -Path $javascriptTarget -Force | Out-Null
         $javascriptFiles | Copy-Item -Destination $javascriptTarget
     }
+    'merge_rpg' {
+        Copy-RequiredFile (Join-Path $SourceRoot 'index.html') $staging
+        foreach ($directory in @('src', 'styles', 'assets')) {
+            Copy-RequiredDirectory (Join-Path $SourceRoot $directory) $staging
+        }
+    }
 }
 
 $requiredFiles = switch ($Game) {
@@ -115,6 +121,7 @@ $requiredFiles = switch ($Game) {
     'scroll_hunter' { @('index.html', 'style.css', 'js/core/main.js') }
     'dark_pool' { @('index.html', 'game.js', 'assets/sprites') }
     'rus_vs_yashcher' { @('index.html', 'styles.css', 'js/game.js') }
+    'merge_rpg' { @('index.html', 'src/data/game-config.js', 'src/services/local-runtime.js', 'styles/layout.css', 'styles/components.css', 'assets') }
 }
 foreach ($relativePath in $requiredFiles) {
     if (-not (Test-Path -LiteralPath (Join-Path $staging $relativePath))) {
