@@ -39,7 +39,7 @@
         throw new Error('A 2D canvas context is unavailable');
     const c = context2d;
     const PALETTE = { bg: '#101b23', paper: '#23363b', raised: '#30494a', gold: '#f2cb93', ivory: '#f1e7ce', muted: '#a9bdb3', line: '#658079', green: '#94c5a0', red: '#d98e82' };
-    let VW = 1180, VH = 940, mobile = false, regions = [], activeRegionStart = 0, pointer = { x: -1, y: -1, down: false }, drag = null, tree = false, helpOpen = false, controlMenuOpen = false, landingHover = 'idle', launchStartedAt = null, gameEntryStartedAt = null, relicDetailSlot = null, bagPage = 0, treeOffset = { x: 0, y: 0 }, treeScale = .76, cardPage = 1, paintTime = 0, fxBursts = [], uiAudio = null;
+    let VW = 1180, VH = 940, mobile = false, SAFE_TOP = 0, SAFE_RIGHT = 0, SAFE_BOTTOM = 0, SAFE_LEFT = 0, regions = [], activeRegionStart = 0, pointer = { x: -1, y: -1, down: false }, drag = null, tree = false, helpOpen = false, controlMenuOpen = false, landingHover = 'idle', launchStartedAt = null, gameEntryStartedAt = null, archerDetailSlot = null, archerDetailTab = 'stats', detailModifierPage = 0, bagPage = 0, treeOffset = { x: 0, y: 0 }, treeScale = .76, cardPage = 1, paintTime = 0, fxBursts = [], uiAudio = null;
     let settingsOpen = false, menuMotionReduced = false, menuSound = true, menuDieAngle = .5, menuDieLastTime = null, currentDpr = 0;
     try {
         const raw = localStorage.getItem('zastava-menu-settings');
@@ -99,7 +99,6 @@
         }
     }
     function resize() {
-        const old = mobile;
         const cssW = Math.max(1, document.documentElement.clientWidth || innerWidth);
         const cssH = Math.max(1, innerHeight);
         mobile = cssW / cssH < 1.20;
@@ -108,6 +107,11 @@
         const zoomFactor = Math.min(cssW / baseW, cssH / baseH);
         VW = cssW / zoomFactor;
         VH = cssH / zoomFactor;
+        const safe = getComputedStyle(document.documentElement);
+        SAFE_TOP = (parseFloat(safe.getPropertyValue('--safe-area-top')) || 0) / zoomFactor;
+        SAFE_RIGHT = (parseFloat(safe.getPropertyValue('--safe-area-right')) || 0) / zoomFactor;
+        SAFE_BOTTOM = (parseFloat(safe.getPropertyValue('--safe-area-bottom')) || 0) / zoomFactor;
+        SAFE_LEFT = (parseFloat(safe.getPropertyValue('--safe-area-left')) || 0) / zoomFactor;
         const dpr = Math.min(Math.max(devicePixelRatio || 1, 1), 2);
         currentDpr = dpr;
         screen.width = Math.round(cssW * dpr);
@@ -117,17 +121,25 @@
         c.setTransform(screen.width / VW, 0, 0, screen.height / VH, 0, 0);
         screen.dataset['renderResolution'] = screen.width + '×' + screen.height;
         screen.dataset['sceneResolution'] = sceneCanvas.width + '×' + sceneCanvas.height;
-        if (old !== mobile) {
-            treeOffset = { x: VW / 2 - 600 * .76, y: VH / 2 - 520 * .76 };
-        }
+        if (tree)
+            fitTreeToView();
     }
     addEventListener('resize', resize);
     resize();
-    treeOffset = { x: VW / 2 - 600 * .76, y: VH / 2 - 520 * .76 };
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     const fmt = (v) => { if (!Number.isFinite(Number(v)))
         return '0'; return Number(v.toFixed(2)).toLocaleString('ru-RU', { maximumFractionDigits: 2 }); };
     let selectedMetaNode = null;
+    function fitTreeToView() {
+        const nodes = t.META_NODES;
+        if (!nodes.length)
+            return;
+        const board = { x: SAFE_LEFT + 14, y: SAFE_TOP + (mobile ? 74 : 68), w: VW - SAFE_LEFT - SAFE_RIGHT - 28, h: VH - SAFE_TOP - SAFE_BOTTOM - (mobile ? 154 : 134) }, xs = nodes.map((node) => node.x), ys = nodes.map((node) => node.y);
+        const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys), padding = 40;
+        treeScale = clamp(Math.min((board.w - padding * 2) / (maxX - minX + 72), (board.h - padding * 2) / (maxY - minY + 72)), .3, 1.65);
+        treeOffset = { x: board.x + board.w / 2 - (minX + maxX) * treeScale / 2, y: board.y + board.h / 2 - (minY + maxY) * treeScale / 2 };
+    }
+    fitTreeToView();
     function rect(x, y, w, h, fill, r = 0, stroke = null, line = 1) { c.beginPath(); c.roundRect(x, y, w, h, r); if (fill) {
         c.fillStyle = fill;
         c.fill();
@@ -200,7 +212,7 @@
     function drawHammerIcon(x, y, active) { c.save(); c.translate(x, y); c.rotate(-.48); c.strokeStyle = active ? '#332b23' : '#edd09a'; c.fillStyle = active ? '#332b23' : '#edd09a'; c.lineCap = 'round'; c.lineJoin = 'round'; c.lineWidth = 4; c.beginPath(); c.moveTo(0, -8); c.lineTo(0, 9); c.stroke(); c.beginPath(); c.roundRect(-8, -10, 16, 7, 2); c.fill(); c.restore(); }
     function syncCanvasControls(start = 0) {
         const modal = s.phase.modal, modalContext = modal.type === 'upgrade' ? `${modal.kind}:${modal.kind === 'personal' ? modal.slot : ''}` : modal.type === 'recruit' ? `${modal.slot}:${modal.replacing}` : modal.type === 'equip' ? modal.relicIndex : '';
-        const actions = regions.slice(start).filter(r => r.accessible), context = [tree ? 'tree' : 'game', helpOpen ? 'help' : '', settingsOpen ? 'settings' : '', controlMenuOpen ? 'control-menu' : '', s.controlMode, launchStartedAt === null ? 'ready' : 'launching', relicDetailSlot ?? '', s.phase.mode, modalContext, s.archers.length, selectedMetaNode || ''].join('|');
+        const actions = regions.slice(start).filter(r => r.accessible), context = [tree ? 'tree' : 'game', helpOpen ? 'help' : '', settingsOpen ? 'settings' : '', controlMenuOpen ? 'control-menu' : '', s.controlMode, launchStartedAt === null ? 'ready' : 'launching', archerDetailSlot ?? '', archerDetailTab, s.phase.mode, modalContext, s.archers.length, selectedMetaNode || ''].join('|');
         const focusedIndex = document.activeElement instanceof HTMLButtonElement ? a11yButtons.indexOf(document.activeElement) : -1, restoreFocus = focusedIndex >= 0;
         if (context !== a11yContext || a11yButtons.length !== actions.length) {
             a11yContext = context;
@@ -486,6 +498,19 @@
     }
     function canvasDie(a, x, y, sz, poseOverride, menuStyle = false) {
         const pose = poseOverride ?? diePose(a), base = menuStyle ? '#bd874d' : t.CLASSES[a.klass].color, size = sz * pose.scale, centerY = y + pose.up;
+        if (a.die.phase === 'rolling' && !menuStyle) {
+            const color = t.CLASSES[a.klass].color;
+            c.save();
+            c.globalAlpha = .68 + .18 * Math.sin(paintTime * 13 + a.slot);
+            c.strokeStyle = color;
+            c.lineWidth = Math.max(2, sz * .045);
+            c.shadowColor = color;
+            c.shadowBlur = sz * .16;
+            c.beginPath();
+            c.ellipse(x, centerY, sz * .52, sz * .52, 0, 0, Math.PI * 2);
+            c.stroke();
+            c.restore();
+        }
         // The shadow stays on the parapet while the cube flies upward.
         c.save();
         c.globalAlpha = .22 + Math.max(0, pose.up) / 170;
@@ -548,53 +573,77 @@
             const mode = t.faceModeFor(a, i);
             const ink = menuStyle ? '#38291e' : '#243f3d';
             drawAttackMark(mode, 0, .19, menuStyle ? .22 : .20, ink);
-            const count = t.faceRepeats(a, i);
-            c.font = `900 ${count >= 100 ? '.20' : count >= 10 ? '.24' : '.29'}px system-ui,-apple-system,Segoe UI,sans-serif`;
+            const count = t.faceRepeats(a, i), countLabel = `×${count}`;
+            c.font = `900 ${countLabel.length >= 5 ? '.16' : countLabel.length >= 4 ? '.19' : countLabel.length >= 3 ? '.22' : '.26'}px system-ui,-apple-system,Segoe UI,sans-serif`;
             c.fillStyle = ink;
-            c.fillText(String(count), 0, -.22);
+            c.fillText(countLabel, 0, -.22);
+            const damageLabel = `⚔${t.formatDamage(t.displayedShotDamage(a, i))}`;
+            c.font = `850 ${damageLabel.length >= 7 ? '.10' : damageLabel.length >= 6 ? '.11' : damageLabel.length >= 5 ? '.13' : '.15'}px system-ui,-apple-system,Segoe UI,sans-serif`;
+            c.fillText(damageLabel, 0, .39);
             c.restore();
         }
         c.restore();
     }
     function header() {
         rect(0, 0, VW, VH, PALETTE.bg);
-        rect(10, 8, VW - 20, 46, '#213439', 9, '#46605a');
-        txt(`НОЧЬ ${s.night || t.meta.night}   ·   ВОЛНА ${Math.min(s.wave + 1, s.totalWaves || 12)}/${s.totalWaves || 12}`, 24, 37, mobile ? 15 : 17, PALETTE.gold, 850);
+        const hx = SAFE_LEFT + 10, hw = VW - SAFE_LEFT - SAFE_RIGHT - 20, hy = SAFE_TOP + 8;
+        rect(hx, hy, hw, mobile ? 90 : 46, '#213439', 9, '#46605a');
+        const waveLabel = `НОЧЬ ${s.night || t.meta.night}   ·   ВОЛНА ${Math.min(s.wave + 1, s.totalWaves || 12)}/${s.totalWaves || 12}`;
         const countdown = Math.max(0, Math.ceil(s.nextWaveAt - s.elapsed)), control = CONTROL_MODES.find(mode => mode.id === s.controlMode);
         if (mobile) {
-            txt(`◷ ${String(Math.floor(countdown / 60)).padStart(2, '0')}:${String(countdown % 60).padStart(2, '0')}`, VW - 338, 37, 14, '#d9e4cd');
-            button(control?.short ?? 'РЕЖИМ', VW - 238, 14, 96, 34, () => { controlMenuOpen = !controlMenuOpen; }, s.phase.mode === 'playing', s.controlMode === 'full', 10, 'Режим управления: ' + (control?.name ?? ''));
+            txt(waveLabel, SAFE_LEFT + 18, SAFE_TOP + 31, 13, PALETTE.gold, 850);
+            txt(`◷ ${String(Math.floor(countdown / 60)).padStart(2, '0')}:${String(countdown % 60).padStart(2, '0')}`, VW - SAFE_RIGHT - 18, SAFE_TOP + 31, 14, '#d9e4cd', 700, 'right');
+            button(control?.short ?? 'РЕЖИМ', SAFE_LEFT + 16, SAFE_TOP + 39, 184, 56, () => { controlMenuOpen = !controlMenuOpen; }, s.phase.mode === 'playing', s.controlMode === 'full', 12, 'Режим управления: ' + (control?.name ?? ''));
             if (s.phase.mode === 'playing')
-                button('ВОЛНА ▶', VW - 136, 14, 124, 34, () => t.beginWave(true), s.wave < s.totalWaves, false, 11, '');
+                button('ВОЛНА ▶', VW - SAFE_RIGHT - 228, SAFE_TOP + 39, 148, 56, () => t.beginWave(true), s.wave < s.totalWaves, false, 12, 'Начать следующую волну');
+            button('Ⅱ', VW - SAFE_RIGHT - 68, SAFE_TOP + 39, 56, 56, () => t.pause(), s.phase.mode === 'playing', false, 15, 'Пауза');
         }
         else {
-            txt(`◷ ${String(Math.floor(countdown / 60)).padStart(2, '0')}:${String(countdown % 60).padStart(2, '0')}`, 350, 37, 17, '#d9e4cd');
-            button(control?.short ?? 'РЕЖИМ', 645, 14, 120, 34, () => { controlMenuOpen = !controlMenuOpen; }, s.phase.mode === 'playing', s.controlMode === 'full', 12, 'Режим управления: ' + (control?.name ?? ''));
+            txt(waveLabel, SAFE_LEFT + 24, SAFE_TOP + 37, 17, PALETTE.gold, 850);
+            txt(`◷ ${String(Math.floor(countdown / 60)).padStart(2, '0')}:${String(countdown % 60).padStart(2, '0')}`, SAFE_LEFT + 350, SAFE_TOP + 37, 17, '#d9e4cd');
+            button(control?.short ?? 'РЕЖИМ', SAFE_LEFT + 645, SAFE_TOP + 14, 120, 34, () => { controlMenuOpen = !controlMenuOpen; }, s.phase.mode === 'playing', s.controlMode === 'full', 12, 'Режим управления: ' + (control?.name ?? ''));
             if (s.phase.mode === 'playing')
-                button('ВОЛНА ▶', 775, 14, 165, 34, () => t.beginWave(true), s.wave < s.totalWaves, false, 13, '');
+                button('ВОЛНА ▶', SAFE_LEFT + 775, SAFE_TOP + 14, 165, 34, () => t.beginWave(true), s.wave < s.totalWaves, false, 13, '');
         }
         if (!mobile)
-            button('Ⅱ Пауза', 951, 14, 170, 34, () => t.pause(), s.phase.mode === 'playing', false, 13, 'Пауза');
+            button('Ⅱ Пауза', SAFE_LEFT + 951, SAFE_TOP + 14, 170, 34, () => t.pause(), s.phase.mode === 'playing', false, 13, 'Пауза');
+        if (s.controlMode === 'manual' && s.phase.mode === 'playing')
+            txt('ЗАЛП · ПРОБЕЛ', mobile ? SAFE_LEFT + 108 : SAFE_LEFT + 705, SAFE_TOP + (mobile ? 86 : 60), mobile ? 9 : 10, PALETTE.gold, 850, 'center');
     }
     function drawControlMenu() {
-        const w = Math.min(450, VW - 24), h = 340, x = mobile ? VW - w - 12 : Math.min(645, VW - w - 12), y = 58;
+        const w = Math.min(450, VW - SAFE_LEFT - SAFE_RIGHT - 24), h = 340, x = mobile ? VW - SAFE_RIGHT - w - 12 : Math.min(SAFE_LEFT + 645, VW - SAFE_RIGHT - w - 12), y = SAFE_TOP + (mobile ? 98 : 58);
         rect(x, y, w, h, '#20383b', 12, '#c5ad7f', 2);
         txt('УПРАВЛЕНИЕ', x + 16, y + 28, 16, PALETTE.gold, 900);
         button('×', x + w - 45, y + 6, 34, 30, () => { controlMenuOpen = false; }, true, false, 18, 'Закрыть выбор режима');
-        CONTROL_MODES.forEach((mode, i) => { const yy = y + 42 + i * 57, selected = s.controlMode === mode.id; rect(x + 8, yy, w - 16, 52, selected ? '#4f6d57' : '#2c4847', 8, selected ? '#e8ca8e' : '#58746a', selected ? 2 : 1); txt((selected ? '●  ' : '○  ') + mode.name, x + 18, yy + 20, 14, selected ? PALETTE.gold : PALETTE.ivory, 850); txt(fit(mode.description, mobile ? 54 : 65), x + 20, yy + 40, 10, PALETTE.muted, 650); hit(x + 8, yy, w - 16, 52, () => { t.setControlMode(mode.id); controlMenuOpen = false; }, mode.name + '. ' + mode.description); });
+        CONTROL_MODES.forEach((mode, i) => { const rowH = mobile ? 56 : 52, yy = y + 42 + i * (rowH + 1), selected = s.controlMode === mode.id; rect(x + 8, yy, w - 16, rowH, selected ? '#4f6d57' : '#2c4847', 8, selected ? '#e8ca8e' : '#58746a', selected ? 2 : 1); txt((selected ? '●  ' : '○  ') + mode.name, x + 18, yy + 20, 14, selected ? PALETTE.gold : PALETTE.ivory, 850); txt(fit(mode.description, mobile ? 54 : 65), x + 20, yy + 40, 10, PALETTE.muted, 650); hit(x + 8, yy, w - 16, rowH, () => { t.setControlMode(mode.id); controlMenuOpen = false; }, mode.name + '. ' + mode.description); });
+    }
+    function drawBattleWings(y, h, coreX, coreW) {
+        const sourceW = t.sceneBackgroundCanvas.width / 2, wingW = coreW / 6, sourceH = t.sceneBackgroundCanvas.height;
+        c.save();
+        c.translate(coreX, y);
+        c.scale(-1, 1);
+        c.drawImage(t.sceneBackgroundCanvas, 0, 0, sourceW, sourceH, 0, 0, wingW, h);
+        c.restore();
+        c.save();
+        c.translate(coreX + coreW + wingW, y);
+        c.scale(-1, 1);
+        c.drawImage(t.sceneBackgroundCanvas, sourceW, 0, sourceW, sourceH, 0, 0, wingW, h);
+        c.restore();
     }
     function stage() {
-        const y = mobile ? 65 : 63;
-        const maxW = VW - (mobile ? 24 : 36), maxH = mobile ? Math.max(280, VH * .39) : Math.max(450, Math.min(580, VH * .62));
-        // The battle scene always preserves 900:540 proportions (no stretched actors).
-        const w = Math.min(maxW, maxH * 900 / 540), h = w * 540 / 900, x = (VW - w) / 2;
+        const y = SAFE_TOP + (mobile ? 102 : 63), usableW = VW - SAFE_LEFT - SAFE_RIGHT;
+        const maxW = usableW - (mobile ? 24 : 36), maxH = mobile ? Math.max(280, (VH - SAFE_TOP - SAFE_BOTTOM) * .39) : Math.max(450, Math.min(580, VH * .62));
+        // Desktop adds a decorative side view. The central 900×540 world and its hit geometry stay unchanged.
+        const viewW = mobile ? 900 : 1200, w = Math.min(maxW, maxH * viewW / 540), h = w * 540 / viewW, x = SAFE_LEFT + (usableW - w) / 2, coreW = w * 900 / viewW, coreX = x + (w - coreW) / 2;
         c.save();
         c.beginPath();
         c.roundRect(x, y, w, h, 12);
         c.clip();
+        if (!mobile)
+            drawBattleWings(y, h, coreX, coreW);
         c.imageSmoothingEnabled = true;
         c.imageSmoothingQuality = 'high';
-        c.drawImage(sceneCanvas, x, y, w, h);
+        c.drawImage(sceneCanvas, coreX, y, coreW, h);
         // Slight vignetting at upper and lower edges to support UI affordances
         const g = c.createLinearGradient(0, y, 0, y + 110);
         g.addColorStop(0, '#0a1a2288');
@@ -602,57 +651,52 @@
         c.fillStyle = g;
         c.fillRect(x, y, w, 120);
         if (s.controlMode === 'manual' && s.phase.mode === 'playing')
-            hit(x, y, w, h, () => { const px = (pointer.x - x) * 900 / w, py = (pointer.y - y) * 540 / h; const targets = s.enemies.map(enemy => { const depth = .44 + clamp((enemy.y - 237) / 210, 0, 1) * .56; return { enemy, distance: Math.hypot(px - enemy.x, py - (enemy.y - 30 * depth)), radius: Math.max(20, enemy.radius * depth * 1.8) }; }).filter(item => item.distance <= item.radius).sort((a, b) => a.distance - b.distance); const target = targets[0]; if (target)
+            hit(coreX, y, coreW, h, () => { const px = (pointer.x - coreX) * 900 / coreW, py = (pointer.y - y) * 540 / h, minTouchRadius = mobile ? 28.5 * 900 / coreW : 0; const targets = s.enemies.map(enemy => { const depth = .44 + clamp((enemy.y - 237) / 210, 0, 1) * .56; return { enemy, distance: Math.hypot(px - enemy.x, py - (enemy.y - 30 * depth)), radius: Math.max(20, enemy.radius * depth * 1.8, minTouchRadius) }; }).filter(item => item.distance <= item.radius).sort((a, b) => a.distance - b.distance); const target = targets[0]; if (target)
                 t.manualVolley(target.enemy.id); }, '', true, false);
         for (const slot of UI_SLOT_IDS) {
-            const a = getArch(slot), xx = x + w * tSlotX(slot) / 900, yy = y + h * (mobile ? .73 : .70);
+            const a = getArch(slot), xx = coreX + coreW * tSlotX(slot) / 900, yy = y + h * (mobile ? .22 : .20);
             if (a) {
                 const dieSize = a.klass === 'heavy' ? (mobile ? 58 : 69) : a.klass === 'short' ? (mobile ? 41 : 44) : (mobile ? 49 : 55);
                 canvasDie(a, xx, yy, dieSize);
                 if (s.controlMode === 'manual') {
-                    const ready = t.canManualVolley(slot);
+                    const ready = t.canManualVolley(slot), face = t.faceInfo(a, a.die.face), touchSize = mobile ? Math.max(dieSize * 1.1, 57) : dieSize * 1.1;
                     if (ready)
                         txt('ГОТОВ', xx, yy + dieSize * .68, 10, PALETTE.gold, 900, 'center');
-                    hit(xx - dieSize * .55, yy - dieSize * .55, dieSize * 1.1, dieSize * 1.1, () => t.manualVolley(undefined, slot), `Выстрелить: ${a.name}`, ready, true);
+                    hit(xx - touchSize / 2, yy - touchSize / 2, touchSize, touchSize, () => t.manualVolley(undefined, slot), `Залп ${a.name}: ${face.label}; ${face.number} повторов; урон стрелы ${t.formatDamage(face.damage)}`, ready, true);
                 }
             }
             else {
-                const price = t.SLOTS[slot].price;
-                const can = s.gold >= price && s.phase.mode === 'playing';
-                button('+', xx - 19, y + h * .77 - 16, 38, 38, () => t.openRecruit(slot), can, can, 27, `Нанять лучника за ${fmt(price)} золота`);
-                txt('◈' + fmt(price), xx, y + h * .77 + 38, mobile ? 13 : 14, '#f3dfb3', 850, 'center');
+                const price = t.SLOTS[slot].price, can = s.gold >= price && s.phase.mode === 'playing', buttonSize = mobile ? 56 : 38;
+                button('+', xx - buttonSize / 2, y + h * .77 - buttonSize / 2, buttonSize, buttonSize, () => t.openRecruit(slot), can, can, 27, `Нанять лучника за ${fmt(price)} золота`);
+                txt('◈' + fmt(price), xx, y + h * .77 + buttonSize * .68, mobile ? 13 : 14, '#f3dfb3', 850, 'center');
             }
         }
         // Gate health strips below the gate.
-        const seg = 12, gw = w * .19, gh = mobile ? 7 : 8, gx = x + w * .405, gy = y + h * .845, ratio = clamp(s.lives / Math.max(1, t.maxGate()), 0, 1), filled = Math.round(seg * ratio);
+        const seg = 12, gw = coreW * .19, gh = mobile ? 7 : 8, gx = coreX + coreW * .405, gy = y + h * .845, ratio = clamp(s.lives / Math.max(1, t.maxGate()), 0, 1), filled = Math.round(seg * ratio);
         for (let i = 0; i < seg; i++) {
             const sw = (gw - (seg - 1) * 4) / seg, sx = gx + i * (sw + 4);
             rect(sx, gy, sw, gh, i < filled ? (ratio > .4 ? '#84c792' : '#df9a84') : '#24353b', gh / 2, i < filled ? '#dbe8d9' : '#405259', 1);
         }
         c.restore();
         rect(x, y, w, h, null, 12, '#667f77', 1.5);
-        txt('◈ ' + Math.floor(s.gold) + '  золота', x + 12, y + 25, mobile ? 14 : 16, PALETTE.gold, 900);
-        txt('ᛟ ' + t.meta.runes + ' рун', x + 12, y + 48, mobile ? 11 : 13, '#bed9cf', 800);
-        if (s.controlMode === 'manual') {
-            txt('Нажми ящера или кубик', x + 12, y + 69, mobile ? 10 : 12, PALETTE.ivory, 750);
-            button('ЗАЛП · ПРОБЕЛ', x + w - (mobile ? 164 : 190), y + 52, mobile ? 152 : 178, 32, () => t.manualVolley(), t.canManualVolley(), true, mobile ? 10 : 12, 'Выстрелить всеми готовыми русами');
-        }
-        if (mobile)
-            button('Ⅱ', x + w - 50, y + 9, 38, 33, () => t.pause(), s.phase.mode === 'playing', false, 13, 'Пауза');
+        txt('◈ ' + Math.floor(s.gold) + '  золота', coreX + 12, y + 25, mobile ? 14 : 16, PALETTE.gold, 900);
+        txt('ᛟ ' + t.meta.runes + ' рун', coreX + 12, y + 48, mobile ? 11 : 13, '#bed9cf', 800);
+        if (s.controlMode === 'manual' && !mobile)
+            txt('Нажми ящера или кубик', coreX + 12, y + 69, 12, PALETTE.ivory, 750);
     }
     function tSlotX(slot) { return SLOT_X[slot]; }
     function mainPanels() {
-        const sceneW = Math.min(VW - (mobile ? 24 : 36), (mobile ? Math.max(280, VH * .39) : Math.max(450, Math.min(580, VH * .62))) * 900 / 540), sceneH = sceneW * 540 / 900;
-        const top = mobile ? 65 + sceneH + 13 : 63 + sceneH + 13;
-        rect(10, top, VW - 20, 28, '#20343a', 6);
-        txt('ОПЫТ ДРУЖИНЫ · ' + s.level + ' ур.', 23, top + 19, mobile ? 11 : 13, PALETTE.ivory, 800);
-        bar(206, top + 9, (mobile ? VW - 324 : VW - 355), 9, s.xp / Math.max(.001, s.xpNeeded), '#d8b17d', s.xp >= s.xpNeeded ? 1 : 0);
-        button(s.xp >= s.xpNeeded ? 'СОВЕТ ✦' : 'СОВЕТ', VW - 138, top + 1, 124, 25, () => t.showNextLevel('team'), s.phase.mode === 'playing' && s.xp >= s.xpNeeded, s.xp >= s.xpNeeded, 12, 'Выбрать улучшение дружины');
+        const usableW = VW - SAFE_LEFT - SAFE_RIGHT, viewW = mobile ? 900 : 1200, sceneW = Math.min(usableW - (mobile ? 24 : 36), (mobile ? Math.max(280, (VH - SAFE_TOP - SAFE_BOTTOM) * .39) : Math.max(450, Math.min(580, VH * .62))) * viewW / 540), sceneH = sceneW * 540 / viewW;
+        const top = SAFE_TOP + (mobile ? 102 : 63) + sceneH + 13;
+        rect(SAFE_LEFT + 10, top, usableW - 20, 28, '#20343a', 6);
+        txt('ОПЫТ ДРУЖИНЫ · ' + s.level + ' ур.', SAFE_LEFT + 23, top + 19, mobile ? 11 : 13, PALETTE.ivory, 800);
+        bar(SAFE_LEFT + 206, top + 9, (mobile ? usableW - 324 : usableW - 355), 9, s.xp / Math.max(.001, s.xpNeeded), '#d8b17d', s.xp >= s.xpNeeded ? 1 : 0);
+        button(s.xp >= s.xpNeeded ? 'СОВЕТ ✦' : 'СОВЕТ', VW - SAFE_RIGHT - 138, top + 1, 124, 25, () => t.showNextLevel('team'), s.phase.mode === 'playing' && s.xp >= s.xpNeeded, s.xp >= s.xpNeeded, 12, 'Выбрать улучшение дружины');
         if (mobile) {
-            button('◀', 10, top + 34, 42, 35, () => cardPage = Math.max(0, cardPage - 1), cardPage > 0, false, 13, 'Предыдущие карточки лучников');
-            button('▶', VW - 52, top + 34, 42, 35, () => cardPage = Math.min(3, cardPage + 1), cardPage < 3, false, 13, 'Следующие карточки лучников');
+            button('◀', SAFE_LEFT + 10, top + 31, 56, 56, () => cardPage = Math.max(0, cardPage - 1), cardPage > 0, false, 13, 'Предыдущие карточки лучников');
+            button('▶', VW - SAFE_RIGHT - 66, top + 31, 56, 56, () => cardPage = Math.min(3, cardPage + 1), cardPage < 3, false, 13, 'Следующие карточки лучников');
         }
-        const count = mobile ? 2 : 5, gap = mobile ? 10 : 7, x0 = mobile ? 53 : 15, w = mobile ? (VW - 116) / 2 : (VW - 30 - gap * 4) / 5, cardY = top + (mobile ? 80 : 37), cardH = mobile ? Math.max(295, Math.min(365, VH - cardY - 142)) : 180;
+        const count = mobile ? 2 : 5, gap = mobile ? 10 : 7, x0 = mobile ? SAFE_LEFT + 53 : SAFE_LEFT + 15, w = mobile ? (usableW - 116) / 2 : (usableW - 30 - gap * 4) / 5, cardY = top + (mobile ? 94 : 37), cardH = mobile ? Math.max(220, Math.min(365, VH - SAFE_BOTTOM - cardY - 142)) : 180;
         for (let i = 0; i < count; i++) {
             const slot = mobile ? i + cardPage : i, x = x0 + i * (w + gap);
             if (isSlotId(slot))
@@ -665,51 +709,54 @@
             drawBag(14, top + 228, VW - 28, 42);
     }
     function drawArcherCard(a, slot, x, y, w, h) {
-        rect(x, y, w, h, '#203439', 9, '#516963');
+        const rolling = a?.die.phase === 'rolling';
+        if (rolling) {
+            c.save();
+            c.shadowColor = t.CLASSES[a.klass].color;
+            c.shadowBlur = 12;
+        }
+        rect(x, y, w, h, '#203439', 9, rolling ? t.CLASSES[a.klass].color : '#516963', rolling ? 2.2 : 1);
+        if (rolling)
+            c.restore();
         if (!a) {
             txt('СВОБОДНО', x + w / 2, y + 28, 14, '#abc0ae', 850, 'center');
             txt('◈ ' + fmt(t.SLOTS[slot].price) + ' · урон ×' + fmt(t.SLOTS[slot].mult), x + w / 2, y + 62, 12, PALETTE.gold, 800, 'center');
-            button('+ Нанять', x + 10, y + h - 44, w - 20, 34, () => t.openRecruit(slot), s.gold >= t.SLOTS[slot].price && s.phase.mode === 'playing', true, mobile ? 15 : 12);
+            button('+ Нанять', x + 10, y + h - (mobile ? 62 : 44), w - 20, mobile ? 56 : 34, () => t.openRecruit(slot), s.gold >= t.SLOTS[slot].price && s.phase.mode === 'playing', true, mobile ? 15 : 12);
             return;
         }
-        const short = t.CLASSES[a.klass].name;
-        txt(fit(a.name, mobile ? 15 : 13), x + 9, y + 21, mobile ? 19 : 14, t.CLASSES[a.klass].color, 850);
-        txt('Лучник · ' + short + ' · ' + a.level + ' ур.', x + 9, y + 39, mobile ? 12 : 10, PALETTE.muted, 600);
-        const bw = w - 18;
-        bar(x + 9, y + 48, bw, 5, a.hp / a.maxHp, a.hp / a.maxHp < .35 ? '#e98e84' : '#85ce9d');
-        bar(x + 9, y + 58, bw, 7, a.xp / a.xpNeeded, '#f0c186', a.xp >= a.xpNeeded ? 1 : 0);
-        txt('ОПЫТ  ' + Math.floor(a.xp) + '/' + a.xpNeeded, x + 9, y + 79, mobile ? 11 : 9, '#d9c9a9');
-        let gy = y + 88;
+        const short = t.CLASSES[a.klass].name, trainingReady = a.xp >= a.xpNeeded, trainPrice = t.boostPrice(a);
+        txt(fit(a.name, mobile ? 14 : 13), x + 9, y + 21, mobile ? 18 : 14, t.CLASSES[a.klass].color, 850);
+        txt('Лучник · ' + short + ' · ' + a.level + ' ур.', x + 9, y + 39, mobile ? 11 : 10, PALETTE.muted, 600);
+        const bw = w - 18, hpY = y + (mobile ? 57 : 51), xpY = y + (mobile ? 79 : 68), gy = y + (mobile ? 102 : 88), cellH = mobile ? 60 : 54;
+        txt(`♥ ${Math.ceil(a.hp)}/${Math.ceil(a.maxHp)} HP`, x + 9, y + (mobile ? 53 : 47), mobile ? 10 : 9, a.hp / a.maxHp < .35 ? '#f0a098' : '#d9e7cf', 800);
+        bar(x + 9, hpY, bw, mobile ? 5 : 4, a.hp / a.maxHp, a.hp / a.maxHp < .35 ? '#e98e84' : '#85ce9d');
+        txt('✦ ОПЫТ ' + Math.floor(a.xp) + '/' + a.xpNeeded, x + 9, y + (mobile ? 75 : 64), mobile ? 10 : 9, '#d9c9a9', 700);
+        bar(x + 9, xpY, bw, mobile ? 6 : 5, a.xp / a.xpNeeded, '#f0c186', trainingReady ? 1 : 0);
+        txt(trainingReady ? 'УЧЁБА ГОТОВА' : `ДО УЧЁБЫ · ${fmt(trainPrice)} ◈`, x + 9, gy - 7, mobile ? 9 : 8, '#e8cf9f', 800);
+        const attackCodes = { plain: 'ОБ', pierce: 'ПР', spread: 'ЗЛ', spreadPierce: 'ЗП', field: 'ПЛ', fieldPierce: 'ПП' };
         for (const j of UI_FACE_INDICES) {
-            const xx = x + 8 + j * (bw / 6), width = bw / 6 - 1.5;
-            rect(xx, gy, width, mobile ? 58 : 34, a.die.face === j ? '#566451' : '#34494a', 3);
-            const ff = t.FACE_ATTACKS[j], repeats = t.faceRepeats(a, j);
-            drawAttackMark(t.faceModeFor(a, j), xx + width / 2, gy + (mobile ? 14 : 11), mobile ? 8.5 : 6, ff.color);
+            const xx = x + 8 + j * (bw / 6), width = bw / 6 - 1.5, info = t.faceInfo(a, j), ff = t.FACE_ATTACKS[j];
+            rect(xx, gy, width, cellH, a.die.face === j ? '#566451' : '#34494a', 3, a.die.face === j ? '#e5ca91' : '#495f58');
+            txt(attackCodes[info.mode], xx + width / 2, gy + 10, mobile ? 8 : 7.5, ff.color, 900, 'center');
+            drawAttackMark(info.mode, xx + width / 2, gy + 20, mobile ? 6.4 : 5.5, ff.color);
+            txt('×' + info.number, xx + width / 2, gy + 37, mobile ? 12 : 10, '#efd4a1', 850, 'center');
+            txt('⚔' + t.formatDamage(info.damage), xx + width / 2, gy + cellH - 3, mobile ? 9 : 8, '#d2e3d5', 700, 'center');
             for (const [q, st] of t.activeStatuses(a).slice(0, 2).entries())
-                drawStatusMark(st.id, xx + width - 6 - q * 9, gy + 6, 3.1);
-            txt('×' + repeats, xx + width / 2, gy + (mobile ? 37 : 27), mobile ? 15 : 11, '#efd4a1', 850, 'center');
-            if (mobile)
-                txt('⚔' + t.formatDamage(t.displayedShotDamage(a, j)), xx + width / 2, gy + 52, 9, '#c5d8ca', 650, 'center');
-            hit(xx, gy, width, mobile ? 58 : 34, () => { }, t.faceInfo(a, j).label + ' — ' + t.faceInfo(a, j).desc + ' Урон ' + t.formatDamage(t.displayedShotDamage(a, j)) + ', повторов ' + repeats, true, false);
+                drawStatusMark(st.id, xx + width - 5 - q * 8, gy + 5, 2.8);
+            hit(xx, gy, width, cellH, () => { }, `${info.label} · ${info.number} повторов · урон одной стрелы ${t.formatDamage(info.damage)} · ${info.desc}`, true, false);
         }
-        const speedMult = fmt((t.CLASSES[a.klass].period / a.period) * a.speed);
+        const trainLabel = trainingReady ? 'УЧЁБА ГОТОВА' : `УЧИТЬ ◈${trainPrice}`, trainEnabled = s.phase.mode === 'playing' && s.gold >= trainPrice;
         if (mobile) {
-            txt('У/С ' + fmt(t.estimateDps(a)) + '    Скорость ×' + speedMult, x + 9, gy + 75, 12, '#bdcbc4');
-            const ry = gy + 93;
-            for (let j = 0; j < 6; j++) {
-                const relic = a.relics[j], r = t.RELICS.find(z => z.id === relic);
-                button(r ? r.icon : '·', x + 9 + j * (bw / 6), ry, bw / 6 - 2, 28, () => relic ? t.unequipRelic(slot, j) : undefined, !!relic, false, 13, r ? `Снять реликвию ${r.name}` : `Пустая ячейка реликвий ${j + 1}`);
-            }
-            button(t.boostPrice(a) === 0 ? 'ОБУЧИТЬ ✦' : 'ОБУЧИТЬ ◈' + t.boostPrice(a), x + 9, y + h - 42, (w - 27) * .55, 32, () => t.boostArcher(slot), s.phase.mode === 'playing' && s.gold >= t.boostPrice(a), t.boostPrice(a) === 0, 11);
-            const swapPrice = Math.round(t.SLOTS[slot].price * .65 + 25);
-            button('СМЕНА ◈' + swapPrice, x + 15 + (w - 27) * .55, y + h - 42, (w - 27) * .45, 32, () => t.openRecruit(slot, true), s.phase.mode === 'playing' && s.gold >= swapPrice, false, 11);
+            const rowW = w - 18, trainW = rowW * .61, detailW = rowW - trainW - 6, buttonY = y + h - 61, buttonH = 56;
+            button(trainLabel, x + 9, buttonY, trainW, buttonH, () => t.boostArcher(slot), trainEnabled, trainingReady, 10, 'Обучить лучника; ' + (trainingReady ? 'личная карта готова' : `цена обучения ${trainPrice} золота`));
+            button('ДЕТАЛИ', x + 9 + trainW + 6, buttonY, detailW, buttonH, () => { archerDetailSlot = slot; archerDetailTab = 'stats'; detailModifierPage = 0; }, true, false, 10, 'Характеристики, атаки, модификаторы и реликвии лучника');
         }
         else {
-            txt('У/С ' + fmt(t.estimateDps(a)) + ' · ⚔ ' + t.formatDamage(t.displayedShotDamage(a, a.die.face)) + ' · ◇ ' + a.relics.length + '/6', x + 8, gy + 47, 10, '#b6cfbf');
-            hit(x + 6, gy + 34, w - 12, 23, () => relicDetailSlot = slot, t.relicTable(a));
-            button(t.boostPrice(a) === 0 ? 'ОБУЧИТЬ ✦' : 'ОБУЧИТЬ ◈' + t.boostPrice(a), x + 7, y + h - 28, w * .60 - 8, 23, () => t.boostArcher(slot), s.phase.mode === 'playing' && s.gold >= t.boostPrice(a), t.boostPrice(a) === 0, 10, '');
+            txt(`◈ ${a.relics.length}/6 · У/С ${fmt(t.estimateDps(a))}`, x + 8, gy + cellH + 8, 9, '#b6cfbf', 700);
+            hit(x + 6, gy + cellH, w - 12, 20, () => { archerDetailSlot = slot; archerDetailTab = 'stats'; }, 'Открыть характеристики, атаки, модификаторы и реликвии лучника');
+            button(trainingReady ? 'УЧЁБА ГОТОВА' : 'УЧИТЬ ◈' + trainPrice, x + 7, y + h - 28, w * .57 - 8, 23, () => t.boostArcher(slot), trainEnabled, trainingReady, 9, `Обучить ${a.name}; цена ${trainPrice} золота`);
             const swapPrice = Math.round(t.SLOTS[slot].price * .65 + 25);
-            button('СМЕНА ◈' + swapPrice, x + w * .62, y + h - 28, w * .34, 23, () => t.openRecruit(slot, true), s.phase.mode === 'playing' && s.gold >= swapPrice, false, 11, '');
+            button('СМЕНА ◈' + swapPrice, x + w * .59, y + h - 28, w * .39, 23, () => t.openRecruit(slot, true), s.phase.mode === 'playing' && s.gold >= swapPrice, false, 10, `Заменить ${a.name}; цена ${swapPrice} золота`);
         }
     }
     function drawBag(x, y, w, h) { rect(x, y, w, h, '#1c2d35', 7, '#415a55'); txt('РЕЛИКВИИ', x + 10, y + 17, 12, PALETTE.gold, 820); const max = mobile ? 5 : 10; bagPage = Math.min(bagPage, Math.max(0, Math.ceil(s.relics.length / max) - 1)); const base = x + (mobile ? 15 : 104), start = bagPage * max; for (let j = 0; j < Math.min(max, s.relics.length - start); j++) {
@@ -717,10 +764,11 @@
         if (!r)
             continue;
         const icons = { perun: '⚡', kvass: '♨', boots: '⌁', amulet: '◇', quiver: '➶' };
-        button(icons[r.id] || '◆', base + j * (mobile ? 58 : 62), y + (mobile ? 25 : 7), mobile ? 52 : 55, 27, () => t.openEquip(i), s.phase.mode === 'playing', false, 17, t.relicInfo(r.id));
+        button(icons[r.id] || '◆', base + j * (mobile ? 58 : 62), y + (mobile ? 25 : 7), mobile ? 58 : 55, mobile ? 58 : 27, () => t.openEquip(i), s.phase.mode === 'playing', false, 17, t.relicInfo(r.id));
     } if (s.relics.length > max) {
-        button('◀', x + w - 84, y + 5, 34, 28, () => bagPage = Math.max(0, bagPage - 1), bagPage > 0, false, 14, '');
-        button('▶', x + w - 45, y + 5, 34, 28, () => bagPage = Math.min(Math.ceil(s.relics.length / max) - 1, bagPage + 1), start + max < s.relics.length, false, 14, '');
+        const size = mobile ? 56 : 34;
+        button('◀', x + w - (mobile ? 125 : 84), y + (mobile ? 21 : 5), size, mobile ? 56 : 28, () => bagPage = Math.max(0, bagPage - 1), bagPage > 0, false, 14, '');
+        button('▶', x + w - (mobile ? 63 : 45), y + (mobile ? 21 : 5), size, mobile ? 56 : 28, () => bagPage = Math.min(Math.ceil(s.relics.length / max) - 1, bagPage + 1), start + max < s.relics.length, false, 14, '');
     } if (!s.relics.length)
         txt('Пусто. У шаманов надо отобрать амулеты.', mobile ? x + 10 : x + 210, y + (mobile ? 44 : 20), mobile ? 11 : 12, PALETTE.muted); }
     function shade(alpha = .87) { rect(0, 0, VW, VH, `rgba(5,15,21,${alpha})`); }
@@ -736,9 +784,9 @@
             line = test;
     } if (line)
         txt(line, x, cy, size, color, 600); return cy + lineH; }
-    function dialogBase(title, sub = '') {
+    function dialogBase(title, sub = '', preferredHeight) {
         shade(.91);
-        const ww = Math.min(VW - 24, mobile ? 720 : 900), hh = Math.min(VH - 45, mobile ? 630 : 505), x = (VW - ww) / 2, y = (VH - hh) / 2;
+        const availableW = VW - SAFE_LEFT - SAFE_RIGHT, availableH = VH - SAFE_TOP - SAFE_BOTTOM, ww = Math.min(availableW - 24, mobile ? 720 : 900), hh = Math.min(availableH - 45, preferredHeight ?? (mobile ? 630 : 505)), x = SAFE_LEFT + (availableW - ww) / 2, y = SAFE_TOP + (availableH - hh) / 2;
         c.save();
         c.shadowColor = 'rgba(0,0,0,.55)';
         c.shadowBlur = 30;
@@ -985,21 +1033,63 @@
         }
         button('ОТМЕНА', b.x + b.w / 2 - 100, b.y + b.h - 50, 200, 38, () => t.closeModal(), true, false, 13, 'Отменить выбор реликвии');
     }
-    function modalRelics() { const slot = relicDetailSlot; if (slot === null || !isSlotId(slot))
-        return; const a = getArch(slot); if (!a) {
-        relicDetailSlot = null;
-        return;
-    } const b = dialogBase('РЕЛИКВИИ РУСА', a.name + ' · шесть ячеек'); const step = mobile ? 82 : 58, ww = b.w - 75; for (const i of UI_FACE_INDICES) {
-        const id = a.relics[i], r = t.RELICS.find(z => z.id === id);
-        const y = b.y + 108 + i * step;
-        rect(b.x + 30, y, ww, step - 10, '#344d4c', 8, '#688075');
-        txt(r ? ((r.icon || '◇') + '  ' + r.name) : '◇  Пустая ячейка', b.x + 46, y + 22, mobile ? 14 : 16, PALETTE.ivory);
-        if (r)
-            multiline(r.desc, b.x + 46, y + 40, ww - 170, 16, mobile ? 11 : 12, '#c8d8ce');
-        if (r)
-            button('СНЯТЬ', b.x + b.w - 143, y + 10, 103, step - 29, () => { t.unequipRelic(slot, i); if (!a.relics.length)
-                relicDetailSlot = null; }, s.phase.mode === 'playing', false, 13, `Снять реликвию ${r.name}`);
-    } button('ЗАКРЫТЬ', b.x + b.w / 2 - 100, b.y + b.h - 48, 200, 37, () => relicDetailSlot = null, true, false, 14, 'Закрыть реликвии лучника'); }
+    function modalArcherDetails() {
+        const slot = archerDetailSlot;
+        if (slot === null || !isSlotId(slot))
+            return;
+        const a = getArch(slot);
+        if (!a) {
+            archerDetailSlot = null;
+            return;
+        }
+        const b = dialogBase('ХАРАКТЕРИСТИКИ РУСА', `${a.name} · ${t.CLASSES[a.klass].name} · уровень ${a.level}`, mobile ? 630 : 640), tabs = ['stats', 'faces', 'modifiers', 'relics'], tabNames = { stats: 'СТАТЫ', faces: 'ГРАНИ', modifiers: 'МОДИФИКАТОРЫ', relics: 'РЕЛИКВИИ' }, tabY = b.y + 96, tabH = 56, tabGap = 5, tabW = (b.w - 34 - tabGap * 3) / 4;
+        tabs.forEach((tab, i) => button(tabNames[tab], b.x + 17 + i * (tabW + tabGap), tabY, tabW, tabH, () => { archerDetailTab = tab; detailModifierPage = 0; }, true, archerDetailTab === tab, mobile ? 9 : 11, `Показать раздел: ${tabNames[tab].toLowerCase()}`));
+        const contentY = tabY + tabH + 13, left = b.x + 24, width = b.w - 48;
+        if (archerDetailTab === 'stats') {
+            const face = t.faceInfo(a, a.die.face), swapPrice = Math.round(t.SLOTS[slot].price * .65 + 25), targetNames = { heavy: 'Тяжёлые', mage: 'Шаманы и лекари', fast: 'Быстрые', low: 'Слабые', gate: 'Ближайшие к воротам' };
+            const lines = [`Уровень: ${a.level} · опыт ${Math.floor(a.xp)}/${a.xpNeeded}`, `Здоровье: ${Math.ceil(a.hp)} / ${Math.ceil(a.maxHp)} HP`, `Грань сейчас: ${face.label}`, `Повторы: ${face.number} · урон стрелы ${t.formatDamage(face.damage)}`, `Средний урон за секунду: ${fmt(t.estimateDps(a))}`, `Темп стрельбы: ${fmt(t.CLASSES[a.klass].period / a.period * a.speed)}×`, `Выстрелов за забег: ${a.shots} · урон нанесён ${fmt(a.damageDealt)}`, `Цель: ${targetNames[a.targetMode] || a.targetMode}`, `Реликвии: ${a.relics.length} / 6`];
+            lines.forEach((line, i) => { const yy = contentY + 22 + i * 32; rect(left, yy - 21, width, 27, i % 2 ? '#263d40' : '#2c4444', 6); txt(line, left + 12, yy, mobile ? 12 : 14, i === 2 ? PALETTE.gold : PALETTE.ivory, 700); });
+            button(`СМЕНИТЬ РУСА · ◈${swapPrice}`, b.x + 25, b.y + b.h - 128, b.w - 50, 56, () => { archerDetailSlot = null; t.openRecruit(slot, true); }, s.phase.mode === 'playing' && s.gold >= swapPrice, false, mobile ? 12 : 14, `Заменить ${a.name}; цена ${swapPrice} золота`);
+        }
+        else if (archerDetailTab === 'faces') {
+            const step = mobile ? 59 : 58;
+            for (const i of UI_FACE_INDICES) {
+                const info = t.faceInfo(a, i), yy = contentY + 10 + i * step;
+                rect(left, yy, width, step - 5, '#2c4444', 7, a.die.face === i ? '#e2c88f' : '#61756a', a.die.face === i ? 2 : 1);
+                txt(`${i + 1}. ${info.label}`, left + 11, yy + 18, mobile ? 11 : 13, a.die.face === i ? PALETTE.gold : PALETTE.ivory, 850);
+                txt(`×${info.number} повторов · ${t.formatDamage(info.damage)} урона за стрелу`, left + 11, yy + 37, mobile ? 10 : 12, '#ddcfb0', 750);
+                multiline(info.desc, left + 11, yy + 52, width - 22, 14, mobile ? 9 : 10, PALETTE.muted);
+            }
+        }
+        else if (archerDetailTab === 'modifiers') {
+            const labels = { mult: 'Множитель урона', crit: 'Шанс критического удара', critPower: 'Сила критического удара', shred: 'Снижение защиты цели', execute: 'Урон по ослабленным', boss: 'Урон по тяжёлым целям', velocity: 'Скорость стрелы', pierce: 'Пробитие целей', width: 'Ширина стрелы', bounce: 'Рикошет', split: 'Разделение стрел', salvo: 'Массовый залп', poison: 'Яд', burn: 'Огонь', slow: 'Замедление', stun: 'Оглушение', vulnerable: 'Уязвимость цели', fear: 'Страх', hurry: 'Ускорение после убийства', extraRoll: 'Дополнительный бросок', draw: 'Скорость натяжения', opening: 'Урон по новой цели', bias: 'Смещение результата броска', regen: 'Восстановление здоровья', armor: 'Броня', leech: 'Похищение жизни', bounty: 'Золото за убийство', wisdom: 'Получение опыта', income: 'Доход', synergy: 'Синергия класса', aura: 'Аура дружины', relicLuck: 'Шанс реликвий', relicPower: 'Сила реликвий', relicGuard: 'Защита реликвиями', relicCoin: 'Монеты с дальних целей' };
+            const mods = Object.entries(a.mods).filter(([, value]) => value > 0), perPage = 11, pages = Math.max(1, Math.ceil(mods.length / perPage));
+            detailModifierPage = Math.min(detailModifierPage, pages - 1);
+            const visible = mods.slice(detailModifierPage * perPage, (detailModifierPage + 1) * perPage);
+            if (!visible.length)
+                txt('Пока нет активных модификаторов.', left + 4, contentY + 34, 14, PALETTE.muted, 650);
+            visible.forEach(([key, value], i) => { const yy = contentY + 19 + i * 30; rect(left, yy - 19, width, 25, i % 2 ? '#263d40' : '#2c4444', 5); txt(labels[key] || key, left + 10, yy, mobile ? 11 : 12, PALETTE.ivory, 700); txt(fmt(value), left + width - 10, yy, mobile ? 11 : 12, PALETTE.gold, 800, 'right'); });
+            if (pages > 1) {
+                const navY = b.y + b.h - 128;
+                button('◀', left, navY, 56, 56, () => detailModifierPage = Math.max(0, detailModifierPage - 1), detailModifierPage > 0, false, 14, 'Предыдущая страница модификаторов');
+                txt(`${detailModifierPage + 1} / ${pages}`, b.x + b.w / 2, navY + 35, 12, PALETTE.muted, 750, 'center');
+                button('▶', b.x + b.w - 80, navY, 56, 56, () => detailModifierPage = Math.min(pages - 1, detailModifierPage + 1), detailModifierPage < pages - 1, false, 14, 'Следующая страница модификаторов');
+            }
+        }
+        else {
+            const step = mobile ? 59 : 59;
+            for (const i of UI_FACE_INDICES) {
+                const id = a.relics[i], relic = t.RELICS.find(item => item.id === id), yy = contentY + 9 + i * step;
+                rect(left, yy, width, step - 5, '#2c4444', 7, '#61756a');
+                txt(`${i + 1}. ${relic ? `${relic.icon || '◇'} ${relic.name}` : '◇ Пустая ячейка'}`, left + 11, yy + 19, mobile ? 11 : 13, PALETTE.ivory, 800);
+                if (relic)
+                    multiline(relic.desc, left + 11, yy + 38, width - 112, 14, mobile ? 9 : 10, PALETTE.muted);
+                if (relic)
+                    button('СНЯТЬ', b.x + b.w - 94, yy + 7, 69, 45, () => t.unequipRelic(slot, i), s.phase.mode === 'playing', false, 10, `Снять реликвию ${relic.name}`);
+            }
+        }
+        button('ЗАКРЫТЬ', b.x + b.w / 2 - 100, b.y + b.h - 64, 200, 56, () => { archerDetailSlot = null; }, true, false, 14, 'Закрыть подробности лучника');
+    }
     function landingProgress() { if (launchStartedAt === null)
         return 0; const duration = uiReduceMotion() ? 0.72 : 1.28; return clamp((paintTime - launchStartedAt) / duration, 0, 1); }
     function drawLandingScene(magnification) {
@@ -1050,10 +1140,10 @@
     }
     function hasPreviousRun() { return t.meta.night > 1 || t.meta.runes > 0 || Object.entries(t.meta.nodes).some(([id, level]) => id !== 'root' && typeof level === 'number' && level > 0); }
     function landingLayout() {
-        const hasRun = hasPreviousRun(), mainW = Math.min(mobile ? VW - 56 : 410, VW - 40), mainX = mobile ? (VW - mainW) / 2 : Math.max(72, VW * .065), mainH = mobile ? 58 : 62;
-        const mainY = mobile ? VH - (hasRun ? 222 : 140) : Math.min(VH - 280, 566), forgeW = Math.min(mobile ? VW - 90 : 260, mainW), forgeH = mobile ? 58 : 42;
-        const forgeX = mobile ? (VW - forgeW) / 2 : mainX, forgeY = mainY + mainH + (mobile ? 9 : 14), helpW = mobile ? 154 : 180, settingsW = mobile ? 154 : 180, helpH = mobile ? 58 : 40;
-        const helpX = mobile ? (VW - helpW - settingsW - 10) / 2 : mainX, settingsX = helpX + helpW + 10, helpY = mobile ? VH - 66 : hasRun ? forgeY + forgeH + 12 : mainY + mainH + 16;
+        const usableW = VW - SAFE_LEFT - SAFE_RIGHT, hasRun = hasPreviousRun(), mainW = Math.min(mobile ? usableW - 56 : 410, usableW - 40), mainX = mobile ? SAFE_LEFT + (usableW - mainW) / 2 : SAFE_LEFT + Math.max(72, usableW * .065), mainH = mobile ? 58 : 62;
+        const mainY = mobile ? VH - SAFE_BOTTOM - (hasRun ? 222 : 140) : Math.min(VH - SAFE_BOTTOM - 280, 566), forgeW = Math.min(mobile ? usableW - 90 : 260, mainW), forgeH = mobile ? 58 : 42;
+        const forgeX = mobile ? SAFE_LEFT + (usableW - forgeW) / 2 : mainX, forgeY = mainY + mainH + (mobile ? 9 : 14), helpW = mobile ? 154 : 180, settingsW = mobile ? 154 : 180, helpH = mobile ? 58 : 40;
+        const helpX = mobile ? SAFE_LEFT + (usableW - helpW - settingsW - 10) / 2 : mainX, settingsX = helpX + helpW + 10, helpY = mobile ? VH - SAFE_BOTTOM - 66 : hasRun ? forgeY + forgeH + 12 : mainY + mainH + 16;
         return { mainX, mainY, mainW, mainH, forgeX, forgeY, forgeW, forgeH, helpX, helpY, helpW, helpH, settingsX, settingsW, hasRun };
     }
     function containsPoint(x, y, w, h) { return pointer.x >= x && pointer.x <= x + w && pointer.y >= y && pointer.y <= y + h; }
@@ -1087,8 +1177,8 @@
     }
     function drawLandingMenu() {
         const won = s.phase.mode === 'win', lost = s.phase.mode === 'lose', layout = landingLayout();
-        const center = mobile ? VW / 2 : Math.max(72, VW * .065), align = mobile ? 'center' : 'left';
-        const kickerY = mobile ? 82 : 205, titleY = mobile ? 130 : 260, titleSize = mobile ? 29 : Math.min(52, VW * .046), titleLine = mobile ? 35 : 59;
+        const usableW = VW - SAFE_LEFT - SAFE_RIGHT, center = mobile ? SAFE_LEFT + usableW / 2 : SAFE_LEFT + Math.max(72, usableW * .065), align = mobile ? 'center' : 'left';
+        const kickerY = SAFE_TOP + (mobile ? 82 : 205), titleY = SAFE_TOP + (mobile ? 130 : 260), titleSize = mobile ? 29 : Math.min(52, VW * .046), titleLine = mobile ? 35 : 59;
         txt(`ПОСЛЕДНЯЯ ЗАСТАВА · НОЧЬ ${t.meta.night}`, center, kickerY, mobile ? 11 : 14, PALETTE.gold, 900, align);
         txt('РУСЫ ПРОТИВ', center, titleY, titleSize, PALETTE.ivory, 950, align);
         txt('ЯЩЕРОВ', center, titleY + titleLine, titleSize, PALETTE.ivory, 950, align);
@@ -1096,7 +1186,7 @@
             const result = won ? `ЗАСТАВА ВЫСТОЯЛА · ОТБИТО ВОЛН ${s.wave}` : `ДОЗОР ПАЛ · ОТБИТО ВОЛН ${s.wave}`;
             txt(result, center, titleY + titleLine + (mobile ? 31 : 40), mobile ? 11 : 14, won ? '#a9dfa9' : '#efaa91', 900, align);
         }
-        const dieX = mobile ? VW * .5 : VW * .79, dieY = mobile ? VH * .32 : VH * .33, dieSize = mobile ? 96 : 142, reduced = uiReduceMotion();
+        const dieX = mobile ? SAFE_LEFT + usableW * .5 : SAFE_LEFT + (VW - SAFE_LEFT - SAFE_RIGHT) * .79, dieY = SAFE_TOP + (mobile ? VH * .32 : VH * .33), dieSize = mobile ? 96 : 142, reduced = uiReduceMotion();
         const glow = c.createRadialGradient(dieX, dieY, dieSize * .12, dieX, dieY, dieSize * 1.15);
         glow.addColorStop(0, landingHover === 'roll' ? 'rgba(244,192,112,.27)' : 'rgba(244,192,112,.16)');
         glow.addColorStop(1, 'rgba(244,192,112,0)');
@@ -1136,7 +1226,7 @@
         button('БРОСИТЬ КОСТЬ', layout.mainX, layout.mainY, layout.mainW, layout.mainH, () => { if (launchStartedAt === null)
             launchStartedAt = paintTime; }, true, true, mobile ? 17 : 20, 'Бросить кость и начать дозор', 'die');
         if (layout.hasRun)
-            button('КУЗНИЦА РОДА', layout.forgeX, layout.forgeY, layout.forgeW, layout.forgeH, () => { tree = true; helpOpen = false; selectedMetaNode = null; treeOffset = { x: VW / 2 - 600 * treeScale, y: VH / 2 - 490 * treeScale }; }, true, false, mobile ? 12 : 14, `Открыть кузницу рода, рун: ${t.meta.runes}`, 'hammer');
+            button('КУЗНИЦА РОДА', layout.forgeX, layout.forgeY, layout.forgeW, layout.forgeH, () => { tree = true; helpOpen = false; selectedMetaNode = null; fitTreeToView(); }, true, false, mobile ? 12 : 14, `Открыть кузницу рода, рун: ${t.meta.runes}`, 'hammer');
         button('КАК ИГРАТЬ', layout.helpX, layout.helpY, layout.helpW, layout.helpH, () => { helpOpen = true; }, true, false, mobile ? 12 : 14, 'Кратко объяснить правила');
         button('НАСТРОЙКИ', layout.settingsX, layout.helpY, layout.settingsW, layout.helpH, () => { settingsOpen = true; }, true, false, mobile ? 12 : 14, 'Настройки меню');
     }
@@ -1204,7 +1294,7 @@
         return false;
     }
     function startOrPause() {
-        const ww = Math.min(VW - 24, mobile ? 660 : 730), hh = 325, x = (VW - ww) / 2, y = (VH - hh) / 2;
+        const availableW = VW - SAFE_LEFT - SAFE_RIGHT, availableH = VH - SAFE_TOP - SAFE_BOTTOM, ww = Math.min(availableW - 24, mobile ? 660 : 730), hh = 325, x = SAFE_LEFT + (availableW - ww) / 2, y = SAFE_TOP + (availableH - hh) / 2;
         shade(.78);
         c.save();
         c.shadowColor = 'rgba(0,0,0,.5)';
@@ -1221,7 +1311,7 @@
     }
     function drawTree() {
         shade(.98);
-        const x = 14, y = 60, w = VW - 28, h = VH - 118;
+        const x = SAFE_LEFT + 14, y = SAFE_TOP + (mobile ? 74 : 68), w = VW - SAFE_LEFT - SAFE_RIGHT - 28, h = VH - SAFE_TOP - SAFE_BOTTOM - (mobile ? 154 : 134);
         rect(x, y, w, h, '#141f28', 12, '#60756b');
         c.save();
         c.beginPath();
@@ -1245,8 +1335,7 @@
         }
         for (const n of nodes) {
             const xx = treeOffset.x + n.x * treeScale, yy = treeOffset.y + n.y * treeScale, r = 36 * treeScale, purchased = t.metaLevel(n.id), ready = n.pre.every(p => t.metaLevel(p) > 0), maxed = purchased >= n.max, affordable = ready && t.meta.runes >= t.metaPrice(n.id) && !maxed;
-            const fill = maxed ? '#255842' : purchased > 0 ? '#2c5447' : affordable ? '#324c62' : '#1a2025';
-            const stroke = maxed ? '#7fe3a5' : affordable ? '#d8d67e' : '#4b5960';
+            const fill = maxed ? '#255842' : purchased > 0 ? '#2c5447' : affordable ? '#324c62' : '#1a2025', stroke = maxed ? '#7fe3a5' : affordable ? '#d8d67e' : '#4b5960';
             c.beginPath();
             c.arc(xx, yy, r, 0, 2 * Math.PI);
             c.fillStyle = fill;
@@ -1268,31 +1357,36 @@
                 txt('МАКС', xx, yy - r - 8, Math.max(9, 12 * treeScale), '#9cf0b7', 900, 'center');
             else if (affordable)
                 txt('ᛟ' + t.metaPrice(n.id), xx, yy - r - 8, Math.max(9, 12 * treeScale), '#f4e08d', 850, 'center');
-            hit(xx - r, yy - r, r * 2, r * 2, () => { selectedMetaNode = n.id; }, n.title + ' · ' + n.desc, true);
+            const touchRadius = mobile ? 28.5 : r;
+            hit(xx - touchRadius, yy - touchRadius, touchRadius * 2, touchRadius * 2, () => { selectedMetaNode = n.id; }, n.title + ' · ' + n.desc, true);
         }
         c.restore();
-        txt('КУЗНИЦА РОДА · ᛟ ' + t.meta.runes, 23, 39, mobile ? 18 : 23, PALETTE.gold, 900);
-        button('НАЗАД', VW - 175, 13, 155, 36, () => { tree = false; selectedMetaNode = null; }, true, false, 14, 'Закрыть дерево улучшений');
-        button('＋', VW - 130, VH - 54, 43, 37, () => zoom(1.2), true, false, 23, 'Увеличить масштаб дерева');
-        button('−', VW - 75, VH - 54, 43, 37, () => zoom(.82), true, false, 23, 'Уменьшить масштаб дерева');
-        txt('Серое — закрыто · синее/жёлтое — можно купить · зелёное — изучено', 25, VH - 23, 12, PALETTE.muted);
+        txt('КУЗНИЦА РОДА · ᛟ ' + t.meta.runes, SAFE_LEFT + 23, SAFE_TOP + 39, mobile ? 15 : 23, PALETTE.gold, 900);
+        txt('Цвет узла: серый — закрыто · жёлтый — доступно · зелёный — изучено', SAFE_LEFT + 23, SAFE_TOP + 59, mobile ? 10 : 11, PALETTE.muted, 650);
+        const backH = mobile ? 58 : 36;
+        button('НАЗАД', VW - SAFE_RIGHT - 165, SAFE_TOP + (mobile ? 5 : 13), 150, backH, () => { tree = false; selectedMetaNode = null; }, true, false, mobile ? 13 : 14, 'Закрыть дерево улучшений');
+        const size = mobile ? 58 : 44, fitW = mobile ? 100 : 120, gap = 8, base = VW - SAFE_RIGHT - (size * 2 + fitW + gap * 2) - 14, cy = VH - SAFE_BOTTOM - (mobile ? 69 : 60);
+        button('＋', base, cy, size, size, () => zoom(1.2), true, false, 23, 'Увеличить масштаб дерева');
+        button('−', base + size + gap, cy, size, size, () => zoom(.82), true, false, 23, 'Уменьшить масштаб дерева');
+        button('ВПИСАТЬ', base + (size + gap) * 2, cy, fitW, size, fitTreeToView, true, false, mobile ? 10 : 12, 'Показать всё дерево целиком');
         if (selectedMetaNode) {
             const n = nodes.find(z => z.id === selectedMetaNode);
             if (n) {
-                const mw = Math.min(440, VW - 32), mh = 310, mx = VW - mw - 16, my = Math.max(60, (VH - mh) / 2), lvl = t.metaLevel(n.id), maxed = lvl >= n.max;
+                const usableW = VW - SAFE_LEFT - SAFE_RIGHT, usableH = VH - SAFE_TOP - SAFE_BOTTOM, mw = Math.min(440, usableW - 32), mh = 310, mx = SAFE_LEFT + usableW - mw - 16, my = SAFE_TOP + Math.max(12, (usableH - mh) / 2), lvl = t.metaLevel(n.id), maxed = lvl >= n.max;
                 rect(mx, my, mw, mh, '#283f43', 15, maxed ? '#7fe3a5' : '#e6c38a', 2);
                 txt(fit(n.title, 28), mx + 20, my + 42, 22, maxed ? '#c7ffd8' : PALETTE.gold, 900);
                 multiline(n.desc, mx + 20, my + 82, mw - 40, 22, 16, PALETTE.ivory);
                 txt('Уровень ' + lvl + ' из ' + n.max, mx + 20, my + 145, 14, PALETTE.muted);
                 txt(maxed ? 'МАКСИМУМ ДОСТИГНУТ' : 'Цена: ᛟ ' + t.metaPrice(n.id), mx + 20, my + 170, 17, maxed ? '#8fe5aa' : PALETTE.gold, 850);
-                const can = n.pre.every(p => t.metaLevel(p) > 0) && t.meta.runes >= t.metaPrice(n.id) && lvl < n.max;
-                button(maxed ? 'МАКС' : 'ИЗУЧИТЬ', mx + 20, my + 224, mw - 125, 45, () => { t.buyMeta(n.id); selectedMetaNode = null; }, can, can, 16, `Изучить улучшение ${n.title} за ${t.metaPrice(n.id)} рун`);
-                button('×', mx + mw - 67, my + 224, 46, 45, () => selectedMetaNode = null, true, false, 18, 'Закрыть описание улучшения');
+                const can = n.pre.every(p => t.metaLevel(p) > 0) && t.meta.runes >= t.metaPrice(n.id) && lvl < n.max, actionH = mobile ? 56 : 45, closeW = mobile ? 56 : 46;
+                button(maxed ? 'МАКС' : 'ИЗУЧИТЬ', mx + 20, my + 224, mw - (mobile ? 100 : 125), actionH, () => { t.buyMeta(n.id); selectedMetaNode = null; }, can, can, 16, `Изучить улучшение ${n.title} за ${t.metaPrice(n.id)} рун`);
+                button('×', mx + mw - 20 - closeW, my + 224, closeW, actionH, () => selectedMetaNode = null, true, false, 18, 'Закрыть описание улучшения');
             }
         }
     }
-    function zoom(f) { const cx = VW / 2, cy = VH / 2; treeOffset.x = cx - (cx - treeOffset.x) * f; treeOffset.y = cy - (cy - treeOffset.y) * f; treeScale = clamp(treeScale * f, .3, 1.65); }
+    function zoom(f, cx = VW / 2, cy = VH / 2) { treeOffset.x = cx - (cx - treeOffset.x) * f; treeOffset.y = cy - (cy - treeOffset.y) * f; treeScale = clamp(treeScale * f, .3, 1.65); }
     function draw() {
+        document.body.classList.toggle('brand-menu-visible', s.phase.mode === 'idle' && launchStartedAt === null && gameEntryStartedAt === null && !tree);
         if (Math.min(Math.max(devicePixelRatio || 1, 1), 2) !== currentDpr)
             resize();
         paintTime = performance.now() / 1000;
@@ -1316,15 +1410,15 @@
         header();
         stage();
         mainPanels();
-        const overlayStart = regions.length, hasOverlay = tree || relicDetailSlot !== null || ['paused', 'upgrade', 'recruit', 'equip'].includes(s.phase.mode);
+        const overlayStart = regions.length, hasOverlay = tree || archerDetailSlot !== null || ['paused', 'upgrade', 'recruit', 'equip'].includes(s.phase.mode);
         if (hasOverlay)
             controlMenuOpen = false;
         else if (controlMenuOpen)
             drawControlMenu();
         if (tree)
             drawTree();
-        else if (relicDetailSlot !== null)
-            modalRelics();
+        else if (archerDetailSlot !== null)
+            modalArcherDetails();
         else if (s.phase.mode === 'upgrade')
             modalUpgrade();
         else if (s.phase.mode === 'recruit')
@@ -1362,7 +1456,7 @@
         treeOffset.y = drag.oy + pointer.y - drag.y;
     } });
     screen.addEventListener('pointerup', ev => { pointer = Object.assign(pointer, point(ev), { down: false }); if (drag && Math.hypot(pointer.x - drag.x, pointer.y - drag.y) < 12) {
-        const r = [...regions.slice(activeRegionStart)].reverse().find(q => pointer.x >= q.x && pointer.x <= q.x + q.w && pointer.y >= q.y && pointer.y <= q.y + q.h);
+        const candidates = regions.slice(activeRegionStart).filter(q => pointer.x >= q.x && pointer.x <= q.x + q.w && pointer.y >= q.y && pointer.y <= q.y + q.h), nodes = tree ? candidates.filter(q => q.tip.includes(' · ')) : [], r = nodes.length ? nodes.sort((a, b) => Math.hypot(pointer.x - (a.x + a.w / 2), pointer.y - (a.y + a.h / 2)) - Math.hypot(pointer.x - (b.x + b.w / 2), pointer.y - (b.y + b.h / 2)))[0] : candidates.at(-1);
         if (r?.enabled)
             try {
                 const rx = r.x + r.w / 2, ry = r.y + r.h / 2;
@@ -1376,9 +1470,9 @@
     } drag = null; });
     screen.addEventListener('wheel', ev => { if (tree) {
         ev.preventDefault();
-        zoom(ev.deltaY < 0 ? 1.12 : .88);
+        zoom(ev.deltaY < 0 ? 1.12 : .88, pointer.x, pointer.y);
     } }, { passive: false });
-    window.addEventListener('keydown', ev => { if (ev.code === 'Space' && !ev.repeat && !controlMenuOpen && !tree && !helpOpen && !settingsOpen && relicDetailSlot === null && !(ev.target instanceof HTMLButtonElement) && !(ev.target instanceof HTMLInputElement) && !(ev.target instanceof HTMLTextAreaElement) && t.canManualVolley()) {
+    window.addEventListener('keydown', ev => { if (ev.code === 'Space' && !ev.repeat && !controlMenuOpen && !tree && !helpOpen && !settingsOpen && archerDetailSlot === null && !(ev.target instanceof HTMLButtonElement) && !(ev.target instanceof HTMLInputElement) && !(ev.target instanceof HTMLTextAreaElement) && t.canManualVolley()) {
         ev.preventDefault();
         t.manualVolley();
         return;
@@ -1402,8 +1496,8 @@
             else
                 tree = false;
         }
-        else if (relicDetailSlot !== null)
-            relicDetailSlot = null;
+        else if (archerDetailSlot !== null)
+            archerDetailSlot = null;
         else if (['recruit', 'equip'].includes(s.phase.mode))
             t.closeModal();
         else if (['paused', 'playing'].includes(s.phase.mode))

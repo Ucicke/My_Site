@@ -91,6 +91,8 @@ function updateUI() {
     const menu = [STATES.INTRO, STATES.PROLOGUE, STATES.GAME_OVER, STATES.VICTORY, STATES.QUARTERMASTER]
         .includes(gameState);
     ui.container.classList.toggle('menu-mode', menu);
+    const brandMenu = [STATES.INTRO, STATES.PROLOGUE].includes(gameState);
+    ui.container.classList.toggle('brand-menu-visible', brandMenu);
 
     const onMap = gameState === STATES.STEP;
     const inShop = gameState === STATES.QUARTERMASTER;

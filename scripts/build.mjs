@@ -10,6 +10,7 @@ export const siteFiles = [
   'index.html',
   'site-assets/styles.css',
   'site-assets/site.js',
+  'site-assets/brand-mark.svg',
   'site-assets/favicon.svg',
   'site-assets/cover-lifesim.svg',
   'site-assets/cover-deadweed.svg',

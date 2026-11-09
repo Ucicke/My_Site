@@ -130,6 +130,35 @@
             /* Клики проходят насквозь: оверлей не имеет права перехватывать ввод. */
             pointer-events: none;
         }
+        .brand-badge {
+            position: fixed;
+            left: calc(env(safe-area-inset-left, 0px) + 12px);
+            bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+            z-index: 11;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            box-sizing: border-box;
+            min-height: 28px;
+            padding: 0 7px;
+            border: 1px solid rgba(251, 249, 244, 0.14);
+            border-radius: 4px;
+            background: rgba(17, 17, 17, 0.58);
+            color: rgba(251, 249, 244, 0.72);
+            font: 600 10px/1.1 system-ui, sans-serif;
+            opacity: 0.62;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+        body.brand-menu-visible .brand-badge {
+            display: inline-flex;
+        }
+        .brand-badge img {
+            display: block;
+            width: 14px;
+            height: 14px;
+        }
     </style>
 </head>
 <body>
@@ -149,6 +178,7 @@
         });
     </script>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="brand-badge"><img src="assets/brand-mark.svg" alt="" aria-hidden="true"><span>Indie Game Forge</span></div>
     <button id="fullscreenBtn" type="button" title="Во весь экран" aria-label="Во весь экран">⛶</button>
     <script src="game.js" defer></script>
 </body>

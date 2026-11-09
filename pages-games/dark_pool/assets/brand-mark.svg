@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img">
+  <title>Indie Game Forge</title>
+  <rect x="1" y="1" width="62" height="62" rx="10" fill="#111111" stroke="#FBF9F4" stroke-opacity=".22" stroke-width="2"/>
+  <path fill="#FA754B" d="M28 8h8v8h8v8h-8v8h-8v-8h-8v-8h8z"/>
+  <path fill="#FBF9F4" d="M11 33h42v6h-10v5h7v5H34l-2 6H20l4-6H13v-5h12v-4H11z"/>
+  <path fill="#FA754B" d="M14 57h36v3H14z"/>
+</svg>

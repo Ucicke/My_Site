@@ -11,6 +11,10 @@
     canvas.width = W * SCENE_SCALE;
     canvas.height = H * SCENE_SCALE;
     ctx.setTransform(SCENE_SCALE, 0, 0, SCENE_SCALE, 0, 0);
+    const sceneBackgroundCanvas = document.createElement('canvas'), sceneBackgroundContext = (() => { const value = sceneBackgroundCanvas.getContext('2d'); if (!value)
+        throw new Error('A background canvas context is unavailable'); return value; })();
+    sceneBackgroundCanvas.width = canvas.width / 3;
+    sceneBackgroundCanvas.height = canvas.height;
     function fmt(v) { const n = Number(v); return Number.isFinite(n) ? Number(n.toFixed(2)).toLocaleString('ru-RU', { maximumFractionDigits: 2 }) : '0'; }
     const rand = (a, b) => a + Math.random() * (b - a), clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     const FACE_INDICES = [0, 1, 2, 3, 4, 5];
@@ -494,8 +498,9 @@
             return;
         const damage = amount * Math.pow(.7, relicCount(a, 'amulet')) * (1 - Math.min(.7, a.mods.armor + (a.relics.length ? a.mods.relicGuard : 0) + (metaBonus('armor') * .04 + metaBonus('guard') * .03)));
         a.hp -= damage;
-        impact(a.x, 428, '#e6a679');
+        impact(a.x, 428, '#e6a679', 'hurt');
         if (a.hp <= 0) {
+            state.fx.push({ kind: 'burst', x: a.x, y: a.y - 28, r: 9, color: '#f0b17e', life: .34, max: .34 });
             state.archers = state.archers.filter(x => x !== a);
             for (const relic of a.relics)
                 state.relics.push(relic);
@@ -523,14 +528,14 @@
         else {
             state.lives = Math.max(0, state.lives - b.power * (1 + .045 * enemy.wave));
             state.gateFlash = .20;
-            impact(clamp(enemy.x, 370, 530), 467, '#e3a17d');
+            impact(clamp(enemy.x, 370, 530), 467, '#e3a17d', 'gate');
             for (let i = 0; i < 4; i++)
                 state.fx.push({ kind: 'spark', x: clamp(enemy.x, 370, 530) + rand(-9, 9), y: 467, vx: rand(-42, 42), vy: rand(-75, -25), life: rand(.25, .52), max: .52, size: rand(2, 4), color: '#b98b61' });
         }
         if (state.lives <= 0)
             showEnd(false);
     }
-    function impact(x, y, color = '#eebc83') { state.fx.push({ kind: 'ring', x, y, r: 5, color, life: .3, max: .3 }); for (let i = 0; i < 5; i++) {
+    function impact(x, y, color = '#eebc83', accent = undefined) { state.fx.push({ kind: 'ring', x, y, r: 5, color, life: .3, max: .3, ...(accent ? { accent } : {}) }); for (let i = 0; i < 5; i++) {
         let a = rand(0, 6.28), v = rand(25, 75);
         state.fx.push({ kind: 'spark', x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: .38, max: .38, size: rand(1.5, 3), color: i % 2 ? '#e0a37b' : '#edcf96' });
     } }
@@ -553,8 +558,10 @@
             actual *= 1 + m.execute;
         if (m.opening && state.elapsed - (e.spawnAt || 0) < 6)
             actual *= 1 + m.opening;
+        let critical = false;
         if (Math.random() < Math.min(.75, m.crit)) {
             actual *= 1.65 + m.critPower;
+            critical = true;
         }
         if (m.shred) {
             e.shred = Math.min(.7, (e.shred || 0) + m.shred);
@@ -587,7 +594,7 @@
         if (m.leech)
             owner.hp = Math.min(owner.maxHp, owner.hp + actual * m.leech);
         e.hp -= actual;
-        impact(e.x, e.y, '#c8e397');
+        impact(e.x, e.y, critical ? '#f4d078' : owner.klass === 'heavy' ? '#e6bd76' : '#c8e397', critical ? 'critical' : owner.klass === 'heavy' ? 'heavy' : undefined);
         if (owner.klass === 'heavy') {
             e.stunned = Math.max(e.stunned, .22);
             for (const other of [...state.enemies])
@@ -620,6 +627,7 @@
             return;
         state.enemies = state.enemies.filter(o => o !== e);
         const b = ENEMIES[e.kind];
+        state.fx.push({ kind: 'burst', x: e.x, y: e.y - 12, r: 8, color: '#d4e58f', life: .34, max: .34 });
         state.kills++;
         if (state.archers.length) {
             const credited = owner && state.archers.includes(owner) ? owner : requiredAt(state.archers, Math.floor(rand(0, state.archers.length)));
@@ -1577,6 +1585,17 @@
     function drawOutlinedLimb(x1, y1, x2, y2, width, fill) { line(x1, y1, x2, y2, width + 2.5, '#293632'); line(x1, y1, x2, y2, width, fill); }
     function drawArcher(a, animationTime = state.elapsed, showHealth = true, facing = 1) {
         const x = a.x, y = a.y, ap = a.appearance || randomAppearance(a.klass), sc = (a.klass === 'heavy' ? 1.55 : a.klass === 'short' ? .66 : 1) * ap.height;
+        if (a.die.phase === 'rolling') {
+            ctx.save();
+            ctx.globalAlpha = .72;
+            ctx.strokeStyle = CLASSES[a.klass].color;
+            ctx.lineWidth = 2.2;
+            ctx.setLineDash([4, 3]);
+            ctx.beginPath();
+            ctx.ellipse(x, y + 4, 18, 7, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+        }
         const pull = a.bowPhase === 'draw' ? bowDrawPull(a) : 0;
         const progress = a.bowPhase === 'release' ? clamp(a.bowPhaseTime / RELEASE_DURATION, 0, 1) : a.bowPhase === 'recover' ? clamp(a.bowPhaseTime / RECOVER_DURATION, 0, 1) : a.bowPhase === 'idle' ? ((animationTime / (8 * BOW_TIMING.idleFrame) + a.slot * .11) % 1 + 1) % 1 : 0;
         const pose = { phase: a.bowPhase, pull, progress, reduced: introReducedMotion || matchMedia('(prefers-reduced-motion: reduce)').matches };
@@ -1713,24 +1732,120 @@
             rr(-18, -40, 36, 4, 2, '#293d43');
             rr(-18, -40, 36 * e.hp / e.maxHp, 4, 2, '#b7df75');
         }
+        if (e.poison > 0 || e.burn > 0) {
+            const allBadges = [[e.poison > 0, '#94e9ab', 'poison'], [e.burn > 0, '#ffad69', 'burn']], badges = allBadges.filter(item => item[0]);
+            for (let i = 0; i < badges.length; i++) {
+                const [, color, type] = requiredAt(badges, i), bx = badges.length === 1 ? 28 : i === 0 ? -28 : 28, by = -38, rrad = 6;
+                ctx.save();
+                ctx.globalAlpha = .82 + .18 * Math.sin(t * 6 + e.phase);
+                ctx.fillStyle = '#223b3b';
+                ctx.beginPath();
+                ctx.arc(bx, by, rrad, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                if (type === 'poison') {
+                    ctx.moveTo(bx, by - 3.8);
+                    ctx.quadraticCurveTo(bx - 5, by + 2, bx, by + 4);
+                    ctx.quadraticCurveTo(bx + 5, by + 2, bx, by - 3.8);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                }
+                else {
+                    ctx.moveTo(bx, by + 3.6);
+                    ctx.bezierCurveTo(bx - 4, by + 1, bx, by - 1, bx, by - 4);
+                    ctx.bezierCurveTo(bx + 4, by - 1, bx + 2, by + 1, bx, by + 3.6);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                }
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+        if (e.id >= 0 && e.attacking && e.attackFlash > .16) {
+            ctx.save();
+            ctx.font = '900 15px system-ui';
+            ctx.textAlign = 'center';
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#293632';
+            ctx.strokeText('!', 0, -55);
+            ctx.fillStyle = '#ffd28a';
+            ctx.fillText('!', 0, -55);
+            ctx.restore();
+        }
         ctx.restore();
         characterOutline = false;
         characterOutlineDepth = 0;
     }
     function drawArrow(a) { const owner = a.source, color = owner.mods.burn ? '#ff9e5e' : owner.mods.poison ? '#8ce89e' : a.type === 'pierce' ? '#9fdcc6' : '#f5d7a9', sprite = window.__archerRig?.getProjectileImage(color); if (!sprite?.complete || sprite.naturalWidth === 0)
         return; ctx.save(); ctx.translate(a.x, a.y); ctx.rotate(Math.atan2(a.vy, a.vx) + Math.PI / 2); ctx.scale(a.size, a.size); ctx.drawImage(sprite, -9, -24, 18, 48); ctx.restore(); }
-    function drawEffects() { for (const f of state.fx) {
-        ctx.globalAlpha = clamp(f.life / f.max, 0, 1);
-        if (f.kind === 'ring') {
-            ctx.beginPath();
-            ctx.arc(f.x, f.y, f.r + (1 - f.life / f.max) * 18, 0, Math.PI * 2);
-            ctx.strokeStyle = f.color;
-            ctx.lineWidth = 3;
-            ctx.stroke();
+    function drawEffects() {
+        for (const f of state.fx) {
+            const progress = 1 - clamp(f.life / f.max, 0, 1);
+            ctx.globalAlpha = clamp(f.life / f.max, 0, 1);
+            if (f.kind === 'ring') {
+                const radius = f.r + progress * 18;
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, radius, 0, Math.PI * 2);
+                ctx.strokeStyle = f.color;
+                ctx.lineWidth = f.accent === 'hurt' ? 4 : 3;
+                ctx.stroke();
+                if (f.accent === 'critical') {
+                    ctx.save();
+                    ctx.translate(f.x, f.y);
+                    ctx.rotate(Math.PI / 4);
+                    ctx.strokeStyle = '#fff0bc';
+                    ctx.lineWidth = 2.5;
+                    ctx.strokeRect(-radius * .55, -radius * .55, radius * 1.1, radius * 1.1);
+                    ctx.restore();
+                    ctx.font = '900 10px system-ui';
+                    ctx.textAlign = 'center';
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = '#293632';
+                    ctx.strokeText('КРИТ', f.x, f.y - 22);
+                    ctx.fillStyle = '#ffe3a0';
+                    ctx.fillText('КРИТ', f.x, f.y - 22);
+                    ctx.textAlign = 'start';
+                }
+                else if (f.accent === 'hurt') {
+                    ctx.beginPath();
+                    ctx.moveTo(f.x - 6, f.y);
+                    ctx.lineTo(f.x + 6, f.y);
+                    ctx.moveTo(f.x, f.y - 6);
+                    ctx.lineTo(f.x, f.y + 6);
+                    ctx.strokeStyle = '#ffe0ac';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+            else if (f.kind === 'spark')
+                circle(f.x, f.y, f.size, f.color);
+            else {
+                const radius = f.r + progress * 20;
+                ctx.save();
+                ctx.translate(f.x, f.y);
+                ctx.rotate(progress * .6);
+                ctx.strokeStyle = f.color;
+                ctx.lineWidth = Math.max(1, 3 - progress * 1.5);
+                for (let i = 0; i < 4; i++) {
+                    ctx.rotate(Math.PI / 2);
+                    ctx.beginPath();
+                    ctx.moveTo(0, radius * .34);
+                    ctx.lineTo(0, radius);
+                    ctx.stroke();
+                }
+                ctx.beginPath();
+                ctx.arc(0, 0, Math.max(1, radius * .2), 0, Math.PI * 2);
+                ctx.fillStyle = f.color;
+                ctx.fill();
+                ctx.restore();
+            }
         }
-        else
-            circle(f.x, f.y, f.size, f.color);
-    } ctx.globalAlpha = 1; }
+        ctx.globalAlpha = 1;
+        ctx.textAlign = 'start';
+    }
     function drawBarks() { for (const b of state.barks) {
         ctx.globalAlpha = clamp(b.life / .5, 0, 1);
         ctx.font = 'bold 12px system-ui';
@@ -1949,6 +2064,8 @@
         }
         introBackdrop = null;
         drawBackground(state.elapsed);
+        sceneBackgroundContext.drawImage(canvas, 0, 0, canvas.width / 6, canvas.height, 0, 0, sceneBackgroundCanvas.width / 2, sceneBackgroundCanvas.height);
+        sceneBackgroundContext.drawImage(canvas, canvas.width * 5 / 6, 0, canvas.width / 6, canvas.height, sceneBackgroundCanvas.width / 2, 0, sceneBackgroundCanvas.width / 2, sceneBackgroundCanvas.height);
         for (const e of state.enemies.slice().sort((a, b) => a.y - b.y))
             drawEnemy(e, state.elapsed);
         for (const a of state.arrows)
@@ -2153,7 +2270,7 @@
         update(dt); render(); requestAnimationFrame(frame); }
     // Canvas receives a readonly live view and commands instead of the mutable simulation state.
     const uiState = readonlyView(state);
-    window.__zastavaUi = { sceneCanvas: canvas, state: uiState, introArcher: readonlyView(introArcher), setIntroMood, setIntroReducedMotion, setControlMode, manualVolley, canManualVolley, maxGate, faceRepeats, estimateDps, boostPrice, pause, get pauseMessage() { return pauseMessage; }, rawShotDamage, displayedShotDamage, formatDamage, faceInfo, faceModeFor, faceSymbolFor, relicInfo, relicTable, reset, update, SLOTS: readonlyView(SLOTS), openRecruit, recruitChoice, boostArcher, openEquip, closeModal, beginWave, chooseUpgrade, upgrade, showNextLevel, CLASSES: readonlyView(CLASSES), FACE_ATTACKS: readonlyView(FACE_ATTACKS), meta: readonlyView(meta), RELICS: readonlyView(RELICS), equipRelic, unequipRelic, META_NODES: readonlyView(META_NODES), metaLevel, metaPrice, buyMeta, CARD_GROUPS: readonlyView(CARD_GROUPS), activeStatuses, frontFace, modifierDefaults };
+    window.__zastavaUi = { sceneCanvas: canvas, sceneBackgroundCanvas, state: uiState, introArcher: readonlyView(introArcher), setIntroMood, setIntroReducedMotion, setControlMode, manualVolley, canManualVolley, maxGate, faceRepeats, estimateDps, boostPrice, pause, get pauseMessage() { return pauseMessage; }, rawShotDamage, displayedShotDamage, formatDamage, faceInfo, faceModeFor, faceSymbolFor, relicInfo, relicTable, reset, update, SLOTS: readonlyView(SLOTS), openRecruit, recruitChoice, boostArcher, openEquip, closeModal, beginWave, chooseUpgrade, upgrade, showNextLevel, CLASSES: readonlyView(CLASSES), FACE_ATTACKS: readonlyView(FACE_ATTACKS), meta: readonlyView(meta), RELICS: readonlyView(RELICS), equipRelic, unequipRelic, META_NODES: readonlyView(META_NODES), metaLevel, metaPrice, buyMeta, CARD_GROUPS: readonlyView(CARD_GROUPS), activeStatuses, frontFace, modifierDefaults };
     requestAnimationFrame(frame);
 })();
 //# sourceMappingURL=game.js.map

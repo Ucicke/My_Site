@@ -41,7 +41,7 @@ jobs:
       - name: Build project site
         run: npm run build
         env:
-          SITE_BASE_PATH: /My_Site/
+          SITE_BASE_PATH: /indie-game-forge/
           SITE_GAME_ORIGIN: https://ucicke.ru
 
       - name: Configure GitHub Pages

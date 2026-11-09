@@ -55,6 +55,7 @@ window.addEventListener('keydown', unlock);
 
 let last = performance.now();
 const simulationClock=new FixedClock();
+let brandMenuState=null;
 
 function simulationStep(dt) {
   const before=game.state;
@@ -73,6 +74,7 @@ function frame(now) {
   simulationClock.advance(elapsed,simulationStep);
   const afterUpdate=profiling?performance.now():0;
   game.music.update(game.state);
+  if(game.state!==brandMenuState){brandMenuState=game.state;document.body.classList.toggle('brand-menu-visible',['splash','menu'].includes(brandMenuState));}
   game.draw();
   if(profiling)game.level01.recordFrame(elapsed,afterUpdate-start,performance.now()-afterUpdate,simulationClock.droppedSeconds-dropped);
 
