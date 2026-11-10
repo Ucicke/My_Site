@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Dark Pool</title>
-    <script>window.__DARK_POOL_PLATFORM__ = "yandexgames";</script>
+    <link rel="icon" type="image/svg+xml" href="assets/brand-mark.svg">
+    <script>window.__DARK_POOL_PLATFORM__ = "crazygames";</script>
     
     
     
@@ -197,9 +198,10 @@
             pointer-events: none;
         }
     </style>
+    <script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>
 </head>
-<body>
-    <div id="boot">ЗАГРУЗКА</div>
+<body class="platform-crazygames">
+    <div id="boot">LOADING</div>
     <script>
         // Оверлей снимается первым отрисованным кадром игры. Игровой цикл стартует
         // из DOMContentLoaded, который наступает раньше load, поэтому к моменту
@@ -219,7 +221,7 @@
         <button id="languageBtn" type="button" aria-label="Сменить язык на английский" title="Язык">RU</button>
         <button id="audioBtn" type="button" aria-label="Выключить звук" title="Звук">ЗВУК: ВКЛ</button>
     </div>
-    <div class="brand-badge"><img src="assets/brand-mark.svg" alt="" aria-hidden="true"><span>Indie Game Forge</span></div>
+    
     <button id="fullscreenBtn" type="button" title="Во весь экран" aria-label="Во весь экран">⛶</button>
     <script src="game.js" defer></script>
 </body>
