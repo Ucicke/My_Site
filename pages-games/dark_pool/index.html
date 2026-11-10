@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Dark Pool</title>
     <link rel="icon" type="image/svg+xml" href="assets/brand-mark.svg">
+    <script>if (new URLSearchParams(window.location.search).has("debug")) { document.documentElement.dataset.noBrand = "true"; document.querySelectorAll("link[rel=icon]").forEach(function (link) { link.remove(); }); }</script>
+    <style>html[data-no-brand="true"] .brand-badge { display: none !important; }</style>
     <script>window.__DARK_POOL_PLATFORM__ = "crazygames";</script>
     
     
@@ -121,8 +123,17 @@
         body.menu-visible .menu-tools {
             display: flex;
         }
+        body:not(.menu-visible) .menu-tools {
+            top: calc(env(safe-area-inset-top, 0px) + 12px);
+            left: calc(env(safe-area-inset-left, 0px) + 12px);
+            display: flex;
+            gap: 0;
+        }
+        body:not(.menu-visible) #languageBtn {
+            display: none;
+        }
         .menu-tools button {
-            min-height: 38px;
+            min-height: 44px;
             padding: 0 12px;
             border: 1px solid rgba(210, 179, 113, 0.45);
             border-radius: 4px;
@@ -133,6 +144,9 @@
             cursor: pointer;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+        }
+        body:not(.menu-visible) #audioBtn {
+            min-width: 112px;
         }
         .menu-tools button:hover,
         .menu-tools button:focus-visible {
@@ -221,8 +235,6 @@
         <button id="languageBtn" type="button" aria-label="Сменить язык на английский" title="Язык">RU</button>
         <button id="audioBtn" type="button" aria-label="Выключить звук" title="Звук">ЗВУК: ВКЛ</button>
     </div>
-    
-    <button id="fullscreenBtn" type="button" title="Во весь экран" aria-label="Во весь экран">⛶</button>
     <script src="game.js" defer></script>
 </body>
 </html>
