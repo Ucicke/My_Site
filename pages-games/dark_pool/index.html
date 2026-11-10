@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Dark Pool</title>
+    <script>window.__DARK_POOL_PLATFORM__ = "yandexgames";</script>
     
     
     
@@ -105,30 +107,40 @@
         #fullscreenBtn[hidden] {
             display: none;
         }
-    
-        /* Защита от системных жестов: требование 1.14 Яндекс Игр. */
-        html, body {
-            touch-action: none;
-            overscroll-behavior: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
+        .menu-tools {
+            position: fixed;
+            top: calc(env(safe-area-inset-top, 0px) + 12px);
+            left: calc(env(safe-area-inset-left, 0px) + 12px);
+            z-index: 12;
+            display: none;
+            align-items: center;
+            gap: 7px;
+            pointer-events: auto;
+        }
+        body.menu-visible .menu-tools {
+            display: flex;
+        }
+        .menu-tools button {
+            min-height: 38px;
+            padding: 0 12px;
+            border: 1px solid rgba(210, 179, 113, 0.45);
+            border-radius: 4px;
+            background: rgba(12, 10, 20, 0.76);
+            color: #e4d7bd;
+            font: 700 11px/1 'Montserrat', 'Georgia', sans-serif;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
-        /* Пока игра не сняла оверлей, жест по нему не должен проваливаться в canvas. */
-        #boot {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #05060a;
-            color: #94a3b8;
-            font: 600 14px 'Montserrat', 'Georgia', sans-serif;
-            letter-spacing: 0.2em;
-            z-index: 10;
-            /* Клики проходят насквозь: оверлей не имеет права перехватывать ввод. */
-            pointer-events: none;
+        .menu-tools button:hover,
+        .menu-tools button:focus-visible {
+            border-color: #d2b371;
+            color: #fff4d8;
+            outline: none;
+        }
+        body.platform-crazygames #fullscreenBtn {
+            display: none !important;
         }
         .brand-badge {
             position: fixed;
@@ -159,6 +171,31 @@
             width: 14px;
             height: 14px;
         }
+    
+        /* Защита от системных жестов: требование 1.14 Яндекс Игр. */
+        html, body {
+            touch-action: none;
+            overscroll-behavior: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Пока игра не сняла оверлей, жест по нему не должен проваливаться в canvas. */
+        #boot {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #05060a;
+            color: #94a3b8;
+            font: 600 14px 'Montserrat', 'Georgia', sans-serif;
+            letter-spacing: 0.2em;
+            z-index: 10;
+            /* Клики проходят насквозь: оверлей не имеет права перехватывать ввод. */
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -178,6 +215,10 @@
         });
     </script>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="menu-tools" aria-label="Настройки игры">
+        <button id="languageBtn" type="button" aria-label="Сменить язык на английский" title="Язык">RU</button>
+        <button id="audioBtn" type="button" aria-label="Выключить звук" title="Звук">ЗВУК: ВКЛ</button>
+    </div>
     <div class="brand-badge"><img src="assets/brand-mark.svg" alt="" aria-hidden="true"><span>Indie Game Forge</span></div>
     <button id="fullscreenBtn" type="button" title="Во весь экран" aria-label="Во весь экран">⛶</button>
     <script src="game.js" defer></script>
