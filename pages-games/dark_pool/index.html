@@ -55,58 +55,6 @@
             touch-action: none;
         }
 
-        /* Кнопка во весь экран. Живёт НАД холстом и в углу ОКНА, а не в углу
-           игрового кадра: в портрете игровой кадр — полоса посередине, и
-           кнопка в её углу была бы до кнопки не дотянуться.
-
-           На компьютере кнопка крупная: мышью в неё целятся без прицела.
-           На телефоне — мелкая: палец в неё попадает по нему, а место на
-           экране занимает палец, а не кнопка. Режим телефона игра помечает
-           классом touch-mode на теле (см. TouchControls). */
-        #fullscreenBtn {
-            position: fixed;
-            top: calc(8px + env(safe-area-inset-top, 0px));
-            right: calc(8px + env(safe-area-inset-right, 0px));
-            z-index: 10;
-            width: 56px;
-            height: 56px;
-            padding: 0;
-            font-size: 28px;
-            line-height: 1;
-            color: #cbd5e1;
-            background: rgba(12, 10, 20, 0.55);
-            border: 1px solid rgba(148, 163, 184, 0.45);
-            border-radius: 10px;
-            cursor: pointer;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Телефон: кнопка мельче и не отвлекает от боя. */
-        body.touch-mode #fullscreenBtn {
-            width: 34px;
-            height: 34px;
-            font-size: 17px;
-            border-radius: 8px;
-            opacity: 0.75;
-        }
-
-        #fullscreenBtn:hover,
-        #fullscreenBtn:focus-visible {
-            color: #00ffcc;
-            border-color: rgba(0, 255, 204, 0.8);
-            outline: none;
-        }
-
-        #fullscreenBtn:active {
-            background: rgba(0, 255, 204, 0.22);
-        }
-
-        /* Кнопка не должна перехватывать жесты игры, но и не должна
-           перерисовываться поверх кадра мигающим. */
-        #fullscreenBtn[hidden] {
-            display: none;
-        }
         .menu-tools {
             position: fixed;
             top: calc(env(safe-area-inset-top, 0px) + 12px);
@@ -194,9 +142,6 @@
             color: #fff4d8;
             outline: none;
         }
-        body.platform-crazygames #fullscreenBtn {
-            display: none !important;
-        }
         .brand-badge {
             position: fixed;
             left: calc(env(safe-area-inset-left, 0px) + 12px);
@@ -281,7 +226,6 @@
         </button>
     </div>
     <div class="brand-badge"><img src="assets/brand-mark.svg" alt="" aria-hidden="true"><span>Indie Game Forge</span></div>
-    <button id="fullscreenBtn" type="button" title="Во весь экран" aria-label="Во весь экран">⛶</button>
     <script src="game.js" defer></script>
 </body>
 </html>
